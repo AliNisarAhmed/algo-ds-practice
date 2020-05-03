@@ -1,6 +1,6 @@
 class MaxBinaryHeap {
 	constructor() {
-		this.values = [];
+    this.values = [];
 	}
 
 	insert(v) {
@@ -67,6 +67,46 @@ class MaxBinaryHeap {
     return removed;
   }
 
+  // extractMax - recursive
+  remove() {
+    const { values } = this;
+    let swap = this.swap.bind(this);
+    swap(0, values.length - 1);
+    const removed = values.pop();
+
+    const sinkDown = (parentIndex) => {
+      let v = values[0];
+      let leftChildIdx = parentIndex * 2 + 1;
+      let rightChildIdx = parentIndex * 2 + 2;
+      let left = values[leftChildIdx];
+      let right = values[rightChildIdx];
+
+      if (!left) {
+        if (right && right > v) {
+          swap(rightChildIdx, parentIndex);
+          sinkDown(rightChildIdx);
+        }
+      } else if (!right) {
+        if (left && left > v) {
+          swap(leftChildIdx, parentIndex);
+          sinkDown(leftChildIdx)
+        }
+      } else if (left > v || right > v) {
+				if (left >= right) {
+          swap(leftChildIdx, parentIndex);
+          sinkDown(leftChildIdx);
+				} else {
+          swap(rightChildIdx, parentIndex);
+          sinkDown(rightChildIdx);
+        }
+      }
+
+      return removed;
+    };
+
+    return sinkDown(0);
+  }
+
   swap(first, second) {
     [ this.values[first], this.values[second] ] =
       [ this.values[second], this.values[first] ];
@@ -75,6 +115,6 @@ class MaxBinaryHeap {
 
 const heap = new MaxBinaryHeap();
 heap.insert(100).insert(200).insert(150).insert(300).insert(400).insert(500);
-const max = heap.extractMax();
+const max = heap.remove();
 console.log('max', max);
 console.log('heap', heap)
