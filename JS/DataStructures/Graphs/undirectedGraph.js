@@ -28,23 +28,45 @@ class UDGraph {
 		});
 		delete this.adjacencyList[v];
 	}
+
+	dftRecursive(v) {
+		const result = [];
+		const visited = {};
+
+		const helper = (v) => {
+			if (!v) return;
+			visited[v] = true;
+			result.push(v);
+			for (let n of this.adjacencyList[v]) {
+				if (!visited[n]) {
+					helper(n);
+				}
+			}
+		}
+
+		helper(v);
+
+		return result;
+
+
+	}
 }
 
 let g = new UDGraph();
 
-g.addVertex('Hong Kong');
-g.addVertex('Karachi');
-g.addVertex('Edmonton');
-g.addVertex('Calgary');
-g.addVertex('Toronto');
-g.addVertex('Seattle');
+g.addVertex('A')
+g.addVertex('B')
+g.addVertex('C')
+g.addVertex('D')
+g.addVertex('E')
+g.addVertex('F')
 
-g.addEdge('Edmonton', 'Calgary');
-g.addEdge('Calgary', 'Toronto');
-g.addEdge('Edmonton', 'Toronto');
-g.addEdge('Edmonton', 'Hong Kong');
-g.addEdge('Edmonton', 'Karachi');
-g.addEdge('Calgary', 'Karachi');
-g.addEdge('Toronto', 'Karachi');
+g.addEdge('A', 'B');
+g.addEdge('A', 'C');
+g.addEdge('D', 'B');
+g.addEdge('C', 'E');
+g.addEdge('D', 'E');
+g.addEdge('D', 'F');
+g.addEdge('E', 'F');
 
-g.removeVertex('Edmonton');
+console.log(g.dftRecursive('A'))
