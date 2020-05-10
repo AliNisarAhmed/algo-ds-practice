@@ -47,7 +47,51 @@ class UDGraph {
 		helper(v);
 
 		return result;
+	}
 
+	dftIterative(v) {
+		const stack = [];
+		const result = [];
+		const visited = {};
+
+		stack.push(v);
+		visited[v] = true;
+
+		while (stack.length > 0) {
+			const next = stack.pop();
+			result.push(next);
+			this.adjacencyList[next].forEach(n => {
+				if (!visited[n]) {
+					stack.push(n);
+					visited[n] = true;
+				}
+			})
+		}
+
+		return result;
+	}
+
+	bftIterative(v) {
+		const queue = [];
+		const result = [];
+		const visited = {};
+
+		queue.push(v);
+		visited[v] = true;
+
+		while (queue.length > 0) {
+			const next = queue.shift();
+			result.push(next);
+
+			this.adjacencyList[next].forEach(n => {
+				if (!visited[n]) {
+					queue.push(n);
+					visited[n] = true;
+				}
+			})
+		}
+
+		return result;
 
 	}
 }
@@ -69,4 +113,6 @@ g.addEdge('D', 'E');
 g.addEdge('D', 'F');
 g.addEdge('E', 'F');
 
-console.log(g.dftRecursive('A'))
+console.log(g.dftRecursive('A'));
+console.log(g.dftIterative('A'));
+console.log(g.bftIterative('A'));
