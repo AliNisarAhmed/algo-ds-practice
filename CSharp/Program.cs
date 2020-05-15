@@ -12,9 +12,9 @@ namespace CSharp
 
             //LinqQueries.Run();
             int[] arr = { 7, 6, 5, 4, 3, 2};
-            SelectionSort.Sort(arr);
+            var newArr = MergeSort.Sort(arr);
 
-            foreach(var b in arr)
+            foreach(var b in newArr)
             {
                 Console.Write(b);
             }
