@@ -147,7 +147,6 @@ while(removed) {
 	removed = pq.extractMax();
 }
 
-console.log('removed', removed)
 console.log(pq.values);
 
 module.exports = PriorityQueue;

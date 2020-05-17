@@ -20,6 +20,7 @@ class WeightedGraph {
 
 	// other methods can be implemented just like unweighted graph
 
+	// Djikstra's Algorithm
 	shortestPath(start, end) {
 		const visited = [];
 
@@ -40,11 +41,20 @@ class WeightedGraph {
 
 		while (pq.values.length > 0) {
 			const current = pq.extractMax();
-			visited.push(current.value);
-			if (current.value === end) return visited;
+			// visited.push(current.value);
+			if (current.value === end) {
+				visited.push(current.value);
+				return visited;
+			}
 			const unvisited = this.adjacencyList[current.value].filter(
 				(v) => !visited.includes(v.node)
 			);
+
+			// if the current node is not the end, and it does not have any unvisited neighbours
+			// that means it is a DEAD END, it must not be added to the visited.
+			if (unvisited.length > 1) {
+				visited.push(current.value);
+			}
 
 			unvisited.forEach(({ node, weight }) => {
 				let newDistance = distances[current.value] + weight;
@@ -97,6 +107,26 @@ x.addEdge('h', 'a', 3)
   .addEdge('d', 'f', 4)
   .addEdge('f', 'w', 2)
   .addEdge('f', 'e', 1)
-  .addEdge('e', 'w', 4)
+	.addEdge('e', 'w', 4)
 
+const y = new WeightedGraph();
+
+y.addVertex('a')
+y.addVertex('b')
+y.addVertex('c')
+y.addVertex('d')
+y.addVertex('e')
+
+y.addEdge('a', 'c', 3);
+y.addEdge('a', 'b', 7);
+y.addEdge('c', 'b', 1);
+y.addEdge('a', 'c', 3);
+y.addEdge('b', 'd', 2);
+y.addEdge('b', 'e', 6);
+y.addEdge('d', 'c', 2);
+y.addEdge('d', 'e', 4);
+
+
+console.log(g.shortestPath('a', 'f'))
 console.log(x.shortestPath('h', 'w'));
+console.log(y.shortestPath('a', 'e'))
