@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "12gHfdvw6iJCHKQGFFP8gyJh/T3iuZT1BCywOTuLdMgykH9xGGVVhna/WOniA2yjIKSkRIIAQnq/4f2CrzMRsA==",
+  "dgSpecHash": "XvUUJmKMeMRIE6K5g6aDit1SnIoHblwOMwoafC9u2RuTmeCF3prDdpq3yzIYisBelwe8qtKGatq/1H/Lb/gI0A==",
   "success": true,
   "projectFilePath": "C:\\web-dev\\algo-ds-practice\\CSharp\\CSharp.csproj",
   "expectedPackageFiles": [
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\AliAhmed\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512"
+    "C:\\Users\\AliAhmed\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
+    "C:\\Users\\AliAhmed\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }
