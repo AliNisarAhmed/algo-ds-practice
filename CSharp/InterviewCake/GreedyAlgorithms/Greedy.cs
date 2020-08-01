@@ -92,5 +92,30 @@ namespace CSharp.InterviewCake.GreedyAlgorithms
 
             return result;
         }
+    
+        
+        public static int[] GetProductsOfAllIntsExceptAtIndex(int[] input)
+        {
+            if (input.Length <= 1)
+                throw new ArgumentException("Input cannot contain 1 or less elements");
+
+            var result = new int[input.Length];
+
+            var productSoFar = 1;
+            for (var i = 0; i < input.Length; i++)
+            {
+                result[i] = productSoFar;
+                productSoFar *= input[i];
+            }
+
+            productSoFar = 1;
+            for (var i = input.Length - 1; i >= 0; i--)
+            {
+                result[i] *= productSoFar;
+                productSoFar *= input[i];
+            }
+
+            return result;
+        }
     }
 }
