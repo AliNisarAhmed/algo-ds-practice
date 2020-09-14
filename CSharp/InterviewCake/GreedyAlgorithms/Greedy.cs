@@ -8,6 +8,8 @@ namespace CSharp.InterviewCake.GreedyAlgorithms
 {
     public static class Greedy
     {
+        private static Random _rand = new Random();
+
         public static int AppleStocks(int[] stockPrices)
         {
             if (stockPrices.Length <= 1)
@@ -116,6 +118,31 @@ namespace CSharp.InterviewCake.GreedyAlgorithms
             }
 
             return result;
+        }
+    
+        
+        public static void Shuffle(int[] input)
+        {
+            if (input.Length <= 1)
+                return;
+
+            for (var i = 0; i < input.Length; i++)
+            {
+                var randomIndex = GetRandom(i, input.Length - 1);
+
+                if (randomIndex != i)
+                {
+                    var temp = input[randomIndex];
+                    input[randomIndex] = input[i];
+                    input[i] = temp;
+                }
+            }
+        }
+
+
+        public static int GetRandom(int floor, int ceil)
+        {
+            return _rand.Next(floor, ceil + 1);
         }
     }
 }
