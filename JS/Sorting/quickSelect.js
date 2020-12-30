@@ -1,44 +1,26 @@
-function quickSort(arr, left = 0, right = arr.length - 1) {
-	if (left < right) {
-		const pivotIndex = helper(arr, left, right);
-		// left side
-		quickSort(arr, left, pivotIndex - 1);
-		// right side
-		quickSort(arr, pivotIndex + 1, right);
-	}
-	return arr;
-}
-
-function helper(arr, start = 0, end = arr.length - 1) {
-	let pivot = arr[start];
-	let pivotIndex = start;
-	for (let i = start + 1; i <= end; i++) {
-		if (pivot > arr[i]) {
-			pivotIndex++;
-			[ arr[i], arr[pivotIndex] ] = [ arr[pivotIndex], arr[i] ];
-		}
+// find the value at kth lowest position if the array were to be sorted
+// (after sort, smallest would be at 0th position, and largest would be at (array length - 1)th position)
+function quickSelect(arr, k, leftIndex = 0, rightIndex = arr.length - 1) {
+	if (rightIndex - leftIndex <= 0) {
+		return arr[leftIndex];
 	}
 
-	[ arr[start], arr[pivotIndex] ] = [ arr[pivotIndex], arr[start] ];
-	return pivotIndex;
-}
+	let pivotIndex = partition(arr, leftIndex, rightIndex);
 
-console.log(quickSort([1, 8, 3, 2, 9, 7, 6, 5, 4]));
-
-
-// --------------   Method 2 -------------------
-
-// here, we choose the last element as the pivot
-
-function quickSort2(arr, left = 0, right = arr.length - 1) {
-	if (left < right) {
-		const pivotIndex = partition(arr, left, right);
-		quickSort2(arr, left, pivotIndex - 1);
-		quickSort2(arr, pivotIndex + 1, right);
+	if (k < pivotIndex) {
+		return quickSelect(arr, k, leftIndex, pivotIndex - 1);
+	} else if (k > pivotIndex) {
+		return quickSelect(arr, k, pivotIndex + 1, rightIndex);
+	} else {
+		return arr[pivotIndex];
 	}
-
-	return arr;
 }
+
+quickSelect([0, 50, 20, 10, 60, 30], 1);  // 10
+
+
+
+// ---- partition ----
 
 function partition(arr, leftPointer, rightPointer) {
 	let pivotIndex = rightPointer;
@@ -82,5 +64,3 @@ function partition(arr, leftPointer, rightPointer) {
     return leftPointer;
 
 }
-
-
