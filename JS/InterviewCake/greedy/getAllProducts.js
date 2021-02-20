@@ -1,16 +1,26 @@
 function getProductsOfAllIntsExceptAtIndex(arr) {
 
-	let result = [1];
-  let left;
-	let right;
+	if (arr.length <= 1) return arr;
 
-	let i = 1;
-	let j =
+	let result = [arr[0]];
+	let temp = 1;
 
+	for (let i = 1; i < arr.length; i++) {
+		result[i] = temp * arr[i - 1];
+		temp = result[i] * temp;
+	}
 
-  return [];
+	temp = arr[arr.length - 1];
+
+	for (let i = arr.length - 2; i >= 0; i--) {
+		result[i] = result[i] * temp;
+		temp = arr[i] * temp;
+	}
+
+	return result;
 }
 
+console.log(getProductsOfAllIntsExceptAtIndex([]));
 
 
 
