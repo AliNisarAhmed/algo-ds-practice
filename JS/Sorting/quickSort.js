@@ -23,7 +23,8 @@ function helper(arr, start = 0, end = arr.length - 1) {
 	return pivotIndex;
 }
 
-console.log(quickSort([1, 8, 3, 2, 9, 7, 6, 5, 4]));
+// console.log(quickSort([1, 8, 3, 2, 9, 7, 6, 5, 4]));
+console.log(quickSort([8, 2, 5, 3]));
 
 
 // --------------   Method 2 -------------------
