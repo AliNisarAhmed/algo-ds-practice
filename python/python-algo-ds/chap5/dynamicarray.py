@@ -9,7 +9,39 @@ def showUnderlyingSize(n):
 		print('Length {0:3d}; Size in bytes: {1:4d}'.format(a, b))
 		data.append(None)
 
-showUnderlyingSize(26)
+def showUnderlyingSize2(n):
+	size_old = 0
+	for k in range(n):
+		a = len(data)
+		b = sys.getsizeof(data)
+		if b != size_old:
+			print('Length {0:3d}; Size in bytes: {1:4d}'.format(a, b))
+			size_old = b
+		data.append(None)
+
+showUnderlyingSize2(26)
+
+
+# -----------
+
+def array_grow_shrink(n, lower_limit = 0.2):
+	data = []
+	size_old = 0
+	current_limit = 10
+	for i in range(n):
+		if i == current_limit:
+			while len(data) > current_limit * lower_limit:
+				data.pop()
+				size = sys.getsizeof(data)
+				print(len(data), size, end = '\t\t')
+				if size < size_old:
+					print('size decreased from: ', size_old, size)
+				else: print("")
+				size_old = size
+			current_limit *= 10
+		data.append(None)
+
+array_grow_shrink(1000)
 
 # -----------
 
