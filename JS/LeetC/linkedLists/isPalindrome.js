@@ -1,9 +1,10 @@
 // ----- RECURSIVE SOLUTION ----------
 
+// If we iterate the nodes in reverse using recursion, and iterate forward at the same time using a variable outside the recursive function, then we can check whether or not we have a palindrome.
+
 function isPalindrome(head) {
 	let frontPointer = head;
 	return recursivelyCheck(head);
-
 
 	function recursivelyCheck(node) {
 		if (node !== null) {
@@ -15,11 +16,7 @@ function isPalindrome(head) {
 	}
 }
 
-
-
-
 // -----------------------------------------------
-
 
 function isPalindrome(head) {
 	let reversed = reverseList(head);
@@ -48,9 +45,7 @@ function reverseList(head) {
 	}
 
 	return reversed;
-
 }
-
 
 class ListNode {
 	constructor(val) {
@@ -59,5 +54,5 @@ class ListNode {
 	}
 }
 
-let list = { val: 1, next: { val: 2, next: {val: 2, next: { val: 1, next: null }}}}
+let list = { val: 1, next: { val: 2, next: { val: 2, next: { val: 1, next: null } } } };
 console.log(isPalindrome(list));
