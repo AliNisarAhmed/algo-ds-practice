@@ -86,6 +86,19 @@ class DynamicArray:
 		self._A[k] = value
 		self._n += 1
 
+	def insert2(self, k, value):
+		if self._n == self._capacity:
+			B = self._make_array(2 * self._capacity)
+			for j in range(self._n + 1, k, -1):
+				B[j] = self._A[j - 1]
+			self._capacity = 2 * self._capacity
+		else:
+			for j in range(self._n + 1, k, -1):
+				self._A[j] = self._A[j - 1]
+		self._A[k] = value
+		self._n + 1
+
+
 	def remove(self, value):
 		for k in range(self._n):
 			if self._A[k] == value:
