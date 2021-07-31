@@ -3,12 +3,9 @@ function removeDuplicates(nums) {
 	let j = 0;
 
 	while (j < nums.length) {
+		nums[i] = nums[j];
 
-		if (nums[i] !== nums[j]) {
-			nums[i] = nums[j];
-		}
-
-		while(nums[j] === nums[i]) {
+		while (nums[j] === nums[i]) {
 			j++;
 		}
 
@@ -20,4 +17,4 @@ function removeDuplicates(nums) {
 	return nums.length;
 }
 
-console.log(removeDuplicates([1,2]));
+console.log(removeDuplicates([1, 2]));

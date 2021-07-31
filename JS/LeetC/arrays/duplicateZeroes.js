@@ -13,6 +13,8 @@ function duplicateZeros(arr) {
 
 		if (arr[left] === 0) {
 
+			// this check is necessary because elements beyond the original length of the list are not written.
+			// i.e. length of the array remains the same after substitutions
 			if (left === length - possibleDups) {
 				arr[length] = 0;
 				length--;
@@ -36,6 +38,7 @@ function duplicateZeros(arr) {
 	}
 
 }
+
 
 
 // This is O(n^2)
