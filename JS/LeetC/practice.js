@@ -1,71 +1,26 @@
-function moveZeroes(arr) {
-	let zeroIndex = arr.findIndex(v => v === 0);
-	if (zerIndex < 0) return;
+function reverseList(head) {
 
-	let nonZeroIndex = zeroIndex;
-
-	while (arr[nonZeroIndex] === 0) {
-		nonZeroIndex++;
+	if (!head || !head.next) {
+		return head;
 	}
 
-	[ arr[zeroIndex], arr[nonZeroIndex] ] = [arr[nonZeroIndex], arr[zeroIndex]];
+	let current = head;
+	let prev = null;
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// In place
-
-function moveZeroes(arr) {
-	let zeroIndex = arr.findIndex(e => e === 0);
-	let pos = findIndexAfter(arr, zeroIndex, notZero);
-
-	if (zeroIndex === -1 || pos === -1) return;
-
-	while (zeroIndex < arr.length && pos < arr.length && zeroIndex < pos) {
-
-			[ arr[pos], arr[zeroIndex] ] = [ arr[zeroIndex], arr[pos] ];
-
-			while (zeroIndex < arr.length && arr[zeroIndex] !== 0) {
-				zeroIndex++;
-			}
-
-			pos = findIndexAfter(arr, zeroIndex, notZero)
-	}
-}
-
-function notZero(n) {
-	return n !== 0;
-}
-
-function findIndexAfter(arr, i, pred) {
-	if (i < 0 || i >= arr.length) return -1;
-
-	for (let j = i + 1; j < arr.length; j++) {
-		if (pred(arr[j])) {
-			return j;
-		}
+	while (current) {
+		temp = current.next;
+		current.next = prev;
+		prev = current;
+		current = temp;
 	}
 
-	return -1;
+	return prev;
+}
+
+function reverseList(head) {
+	if (head === null || head.next === null) return head;
+	let reversed = reverseList(head.next);
+	head.next.next = head;
+	head.next = null;
+	return reversed;
 }
