@@ -1,26 +1,21 @@
-function reverseList(head) {
+function removeDups(head) {
+  if (!head) return head;
 
-	if (!head || !head.next) {
-		return head;
-	}
+  let set = new Set();
 
-	let current = head;
-	let prev = null;
+  let current = head; 
+  let prev = head;
 
-	while (current) {
-		temp = current.next;
-		current.next = prev;
-		prev = current;
-		current = temp;
-	}
+  while (current) {
+    if (set.has(current.val)) {
+      current = current.next
+    } else { 
+      set.add(current.val); 
+      prev.next = current;
+      prev = prev.next; 
+      current = current.next;
+    }
+  }
 
-	return prev;
-}
-
-function reverseList(head) {
-	if (head === null || head.next === null) return head;
-	let reversed = reverseList(head.next);
-	head.next.next = head;
-	head.next = null;
-	return reversed;
+  return head;
 }
