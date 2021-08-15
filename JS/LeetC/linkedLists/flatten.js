@@ -2,6 +2,39 @@
 
 // Flatten the list so that all the nodes appear in a single-level, doubly linked list. You are given the head of the first level of the list.
 
+const Stack = require('../stack/stack.js');
+
+
+function flatten(head) {
+  if (!head) return head;
+
+  let stack = new Stack();
+
+  stack.push(head);
+
+  let prev;
+
+  while(!stack.isEmpty()) {
+    let current = stack.pop();
+    current.prev = prev;
+
+    if (prev) {
+      prev.next = current;
+    }
+
+    if (current.next) {
+      stack.push(current.next);
+    }
+
+    if (current.child) {
+      stack.push(current.child);
+      current.child = null;
+    }
+  }
+
+  return head;
+}
+
 function flatten(head) {
 	if (!head) return head;
 
