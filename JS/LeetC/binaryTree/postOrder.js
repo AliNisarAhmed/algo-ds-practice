@@ -1,28 +1,31 @@
 // Post order - Left > Right > Root
 //
 
-// Iterative
-//
+
+//  Iterative (with a recursive thinking) - with a stack and a linked list
 function postorderTraversal(root) {
-  let res = [];
   let stack = [];
+  let res = [];
 
-  let current = root;
+  if (root == null) return res;
 
-  while (current !== null || stack.length > 0) {
-    while (current) {
-      stack.push(current);
-      current = current.left;
+  stack.push(root);
+  while (stack.length > 0) {
+    let current = stack.pop();
+
+    // Pushing to the "back" of the answer list, so that current.val is the last value in the list
+    // better is to use a LinkedList to avoid O(n) insertion with unshift
+    res.unshift(current.val);
+
+    if (current.left !== null) {
+      stack.push(current.left);
     }
 
-    current = stack.pop();
-
-    if (current.right) {
+    if (current.right !== null) {
       stack.push(current.right);
-    } else {
-      res.push(current.val);
     }
   }
+
   return res;
 }
 
@@ -39,9 +42,7 @@ function postorderTraversal(root) {
   function helper(node, res) {
     if (!node) return;
 
-    if (node.left) {
-      helper(node.left, res);
-    }
+    helper(node.left, res);
     helper(node.right, res);
     res.push(node.val);
   }
