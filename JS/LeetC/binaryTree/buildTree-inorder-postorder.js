@@ -10,26 +10,25 @@ class TreeNode {
 }
 
 function buildTree(inOrder, postOrder) {
-  let leftIndex = 0;
-  let rightIndex = postOrder.length - 1;
+  let indexMap = inOrder.reduce((acc, x, i) => {
+    acc[x] = i
+    return acc;
+  }, {});
 
-  let tree;
+  return helper(0, postOrder.length - 1);
 
-  while (inOrder[leftIndex] !== postOrder[rightIndex]) {
-    let node = new TreeNode(postOrder[rightIndex]);
-    node.left = inOrder[leftIndex];
-    node.right = postOrder[rightIndex];
+  function helper(left, right) {
+    if (left > right) return null;
 
-    if (tree) {
-      tree.left = node.left;
-      tree.right = node.right;
-    } else {
-      tree = node;
-    }
+    let current = postOrder.pop();
+    let index = indexMap[current];
 
-    leftIndex += 2;
-    rightIndex -= 2;
+    let root = new TreeNode(current);
+
+
+    root.right = helper(index + 1, right);
+    root.left = helper(left, index - 1);
+
+    return root;
   }
-
-  return tree;
 }
