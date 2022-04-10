@@ -23,4 +23,5 @@ function combinationSum(candidates, target) {
   }
 }
 
-console.log(combinationSum([2, 3, 5], 8))
+
+module.exports = combinationSum;

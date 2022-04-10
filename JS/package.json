@@ -2,9 +2,8 @@
   "name": "JS",
   "version": "1.0.0",
   "description": "",
-  "main": "findPairWithDifference.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "npx jest --watch"
   },
   "keywords": [],
   "author": "",
