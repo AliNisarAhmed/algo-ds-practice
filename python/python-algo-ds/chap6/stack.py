@@ -1,9 +1,42 @@
+from queue import DeckQueue
+
+
 class Empty(Exception):
     pass
 
 
 class Full(Exception):
     pass
+
+
+class StackUsingQueue:
+    def __init__(self):
+        self._data = DeckQueue()
+        self._size = 0
+
+    def __len__(self):
+        return self._size
+
+    def is_empty(self):
+        return self._data.is_empty()
+
+    def push(self, v):
+        # rotate the queue when pushing so that
+        # when popping the order is correct
+        self._data.enqueue(v)
+        self._size += 1
+        for _ in range(self._size - 1):
+            self.enqueue(self.dequeue())
+
+    def pop(self):
+        if self.is_empty():
+            raise Empty('Stack is empty')
+        result = self._data.dequeue()
+        self._size -= 1
+        return result
+
+    def top(self):
+        return self._data.first()
 
 
 class ArrayStack:

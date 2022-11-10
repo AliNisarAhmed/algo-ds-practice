@@ -1,5 +1,9 @@
-from stack import Empty
+
 from collections import deque
+
+
+class Empty(Exception):
+    pass
 
 
 class DeckQueue:
@@ -57,8 +61,8 @@ class ArrayQueue:
         self._size -= 1
 
         # shrink the underlying array if the size is less than quarter of the array
-        if 0 < self._size < len(self.data) // 4:
-            self._resize(len(self.data) // 2)
+        if 0 < self._size < len(self._data) // 4:
+            self._resize(len(self._data) // 2)
 
         return answer
 
@@ -80,6 +84,11 @@ class ArrayQueue:
             self._data[k] = old[walk]
             walk = (walk + 1) % len(old)
         self._front = 0  # front has been realigned
+
+
+def rotate_queue(q: ArrayQueue, count):
+    for _ in range(count - 1):
+        q.enqueue(q.dequeue())
 
 # 6-13 - Convert Deq from 12345678 to 12354678 using Queue
 
