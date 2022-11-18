@@ -85,6 +85,17 @@ class ArrayQueue:
             walk = (walk + 1) % len(old)
         self._front = 0  # front has been realigned
 
+    def rotate(self):
+        """dequeue an element and then enqueue"""
+        if self.is_empty():
+            raise Empty("Queue is empty")
+        # This step is necessay in cases when underlying array has more space
+        # than queue size
+        # In cases when _size == space, this operation will have no effect
+        self._data[(self._front + self._size) %
+                   len(self._data)] = self._data[self._front]
+        self._front = (self._front + 1) % len(self._data)
+
 
 def rotate_queue(q: ArrayQueue, count):
     for _ in range(count - 1):
