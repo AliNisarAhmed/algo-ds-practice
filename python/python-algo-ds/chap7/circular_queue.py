@@ -56,3 +56,17 @@ class CircularQueue:
         if self._size > 0:
             # old head becomes the new tail
             self._tail = self._tail._next
+
+    def size(self):
+        # same as __len__ but without using _size prop
+        if self._tail is None:
+            return 0
+
+        current = self._tail._next
+        count = 1
+
+        while current != self._tail:
+            count += 1
+            current = current._next
+
+        return count
