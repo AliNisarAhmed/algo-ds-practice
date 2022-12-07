@@ -45,3 +45,10 @@ class LinkedQueue:
             self._tail._next = newest
         self._tail = newest
         self._size += 1
+
+    def rotate(self):
+        """Rotate, i.e., the first element goes to the end"""
+        self._tail._next = self._head
+        self._tail = self._head
+        self._head = self._head._next
+        self._tail._next = None

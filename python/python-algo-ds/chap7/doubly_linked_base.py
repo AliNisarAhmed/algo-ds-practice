@@ -14,7 +14,7 @@ class _DoublyLinkedBase:
         self._header = self._Node(None, None, None)
         self._trailer = self._Node(None, None, None)
         self._header._next = self._trailer
-        self._trailer._pref = self._header
+        self._trailer._prev = self._header
         self._size = 0
 
     def __len__(self):
@@ -44,3 +44,15 @@ class _DoublyLinkedBase:
         node._prev = node._next = node._element = None
 
         return element
+
+    def middle(self):
+        if self._size == 0:
+            raise ValueError("List is empty")
+        left = self._header._next
+        right = self._trailer._prev
+
+        while left != right and left._next != right:
+            left = left._next
+            right = right._prev
+
+        return left

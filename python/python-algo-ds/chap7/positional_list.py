@@ -67,6 +67,12 @@ class PositionalList(_DoublyLinkedBase):
             yield cursor.element()
             cursor = self.after(cursor)
 
+    def __reversed__(self):
+        cursor = self.last()
+        while cursor is not None:
+            yield cursor.element()
+            cursor = self.before(cursor)
+
     # --------------------- MUTATORS -----------------------------------
 
     # override inherited version to return Position instead of Node
@@ -97,3 +103,50 @@ class PositionalList(_DoublyLinkedBase):
         old_value = original._element
         original._element = e
         return old_value
+
+    def max(self):
+        if self.is_empty():
+            return None
+
+        result = self.first().element()
+        for e in self:
+            if e > result:
+                result = e
+        return result
+
+    def find(self, e):
+        for element in self:
+            if element == e:
+                return self._make_position(e)
+        return None
+
+    def _find_rec(self, e, node):
+        if node is self._trailer:
+            return None
+        elif node.element() == e:
+            return node
+        else:
+            return self._find_rec(e, node._next)
+
+    def find_rec(self, e):
+        return self._find_rec(e, self.first())
+
+    def add_last2(self, e):
+        """
+        Using only {is_empty, first, last, prev, next, add_after, add_first}
+        """
+        if self.is_empty():
+            self.add_first(e)
+            return self
+
+        self.add_after(self.last(), e)
+        return self
+
+    def add_before2(self, p, e):
+        """
+        Using only {is_empty, first, last, prev, next, add_after, add_first}
+        """
+        if p == self.first():
+            return self.add_first(e)
+        else:
+            return self.add_after(self.before(p), e)
