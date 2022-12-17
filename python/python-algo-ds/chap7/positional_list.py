@@ -33,7 +33,7 @@ class PositionalList(_DoublyLinkedBase):
         if p._container is not self:
             raise ValueError("p does not belong to this container")
         if p._node._next is None:
-            raise ValueError("p is not longer valid")
+            raise ValueError("p is no longer valid")
         return p._node
 
     def _make_position(self, node):
@@ -41,7 +41,7 @@ class PositionalList(_DoublyLinkedBase):
         if node is self._header or node is self._trailer:
             return None
         else:
-            return self.Position(self, node)
+            return self.Position(self, node) # self passed as container
 
     # --------------------- ACCESSORS -----------------------------------
 
@@ -67,6 +67,7 @@ class PositionalList(_DoublyLinkedBase):
             yield cursor.element()
             cursor = self.after(cursor)
 
+    # 7.15
     def __reversed__(self):
         cursor = self.last()
         while cursor is not None:
@@ -128,6 +129,7 @@ class PositionalList(_DoublyLinkedBase):
         else:
             return self._find_rec(e, node._next)
 
+    # 7.14
     def find_rec(self, e):
         return self._find_rec(e, self.first())
 
@@ -150,3 +152,44 @@ class PositionalList(_DoublyLinkedBase):
             return self.add_first(e)
         else:
             return self.add_after(self.before(p), e)
+
+    def move_to_front(self, p):
+        # node has a _prev and a _next
+        node = self._validate(p)
+        # if node is not already the first node
+        if node != self._header._next:
+            # remove node from existing location
+            node._prev._next = node._next
+            node._next._prev = node._prev
+            # make node point to its new neighbours
+            node._prev = self._header
+            node._next = self._header._next
+            # make new neighbours point to node
+            node._prev._next = node
+            node._next._prev = node
+
+
+# 7.18
+# List: {a, b, c, d, e, f}
+# sequence of access: (a, b, c, d, e, f, a, c, f, b, d, e)
+
+# a -> a, b, c, d, e, f
+# b -> b, a, c, d, e, f
+# c -> c, b, a, d, e, f
+# d -> d, c, b, a, e, f
+# e -> e, d, c, b, a, f
+# f -> f, e, d, c, b, a
+# a -> a, f, e, d, c, b
+# c -> c, a, f, e, d, b
+# f -> f, c, a, e, d, b
+# b -> b, f, c, a, e, d
+# d -> d, b, f, c, a, e
+# e -> e, d, b, f, c, a
+
+# 7.19
+# Minimum is 0 elements with access less than k
+    # this is because we can access each element k times, thus no element
+    # accessed fewer than k times
+# Maximum is n - 1
+    # since we can access one element kn times
+    # leaving others with 0 accesses, this < k times

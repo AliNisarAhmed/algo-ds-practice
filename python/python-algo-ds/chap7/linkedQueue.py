@@ -48,7 +48,12 @@ class LinkedQueue:
 
     def rotate(self):
         """Rotate, i.e., the first element goes to the end"""
-        self._tail._next = self._head
-        self._tail = self._head
-        self._head = self._head._next
-        self._tail._next = None
+        if not self.is_empty():
+            # send current head to after tail
+            self._tail._next = self._head
+            # set current head as the tail
+            self._tail = self._head
+            # set head to be the next of old head
+            self._head = self._head._next
+            # now remove the connection from the "old head" which is now at tail
+            self._tail._next = None
