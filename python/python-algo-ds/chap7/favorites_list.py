@@ -65,3 +65,12 @@ class FavoritesList:
             item = walk.element()
             yield item._value
             walk = self._data.after(walk)
+
+    def clear(self):
+        self._data = PositionalList()
+
+    def reset_counts(self):
+        walk = self._data.first()
+        while walk is not None:
+            walk.element()._count = 0
+            walk = self._data.after(walk)

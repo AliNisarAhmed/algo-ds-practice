@@ -56,3 +56,14 @@ class _DoublyLinkedBase:
             right = right._prev
 
         return left
+
+    def reverse(self):
+        prev = self._header
+        walk = self._header._next
+        while walk is not None:
+            adv = walk._next
+            walk._next = prev
+            walk._prev = adv
+            prev = walk
+            walk = adv
+        self._header, self._trailer = self._trailer, self._header

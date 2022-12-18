@@ -74,6 +74,10 @@ class PositionalList(_DoublyLinkedBase):
             yield cursor.element()
             cursor = self.before(cursor)
 
+    def print(self):
+        for e in self:
+            print(e)
+
     # --------------------- MUTATORS -----------------------------------
 
     # override inherited version to return Position instead of Node
@@ -167,7 +171,31 @@ class PositionalList(_DoublyLinkedBase):
             # make new neighbours point to node
             node._prev._next = node
             node._next._prev = node
+    
+    # 7.34
+    def swap(self, p, q):
+        p_val = p._node._element
+        q_val = p._node._element
+        p._node._element = q_val
+        p._node._element = p_val
 
+        # p_node = p._node
+        # q_node = q._node
+        #
+        # p_node_prev = p._node._prev
+        # p_node_next = p._node._next
+        #
+        # q_node_prev = q._node._prev
+        # q_node_next = q._node._next
+        #
+        # p._node = q_node
+        # q._node = p_node
+        #
+        # p._node._prev = q_node_prev
+        # p._node._next = q_node_next
+        #
+        # q._node._prev = p_node_prev
+        # q._node._next = p_node_next
 
 # 7.18
 # List: {a, b, c, d, e, f}
