@@ -1,8 +1,14 @@
+# from ..chap7 import linkedQueue as LQ
+
+
+class LinkedQueue:
+    pass
+
+
 class Tree:
     """Abstract base class representing a tree"""
 
     class Position:
-
         def element(self):
             raise NotImplementedError("must be implemented by subclass")
 
@@ -14,20 +20,20 @@ class Tree:
 
     # -------- abstract methods that the concrete subclass must support ------
     def root(self):
-        raise NotImplementedError('must be implemented by subclass')
+        raise NotImplementedError("must be implemented by subclass")
 
     def parent(self, p):
-        raise NotImplementedError('must be implemented by subclass')
+        raise NotImplementedError("must be implemented by subclass")
 
     def num_children(self, p):
-        raise NotImplementedError('must be implemented by subclass')
+        raise NotImplementedError("must be implemented by subclass")
 
     def children(self, p):
-        raise NotImplementedError('must be implemented by subclass')
+        raise NotImplementedError("must be implemented by subclass")
 
     def __len__(self):
 
-        raise NotImplementedError('must be implemented by subclass')
+        raise NotImplementedError("must be implemented by subclass")
 
     def is_root(self, p):
         return self.root() == p
@@ -70,7 +76,55 @@ class Tree:
         else:
             return 1 + max(self._height2(c) for c in self.children(p))
 
-    def height(self, p = None):
+    def height(self, p=None):
         if p is None:
             p = self.root()
         return self._height2(p)
+
+    def __iter__(self):
+        for p in self.positions():
+            yield p.element()
+
+    def preorder(self):
+        """
+        Generate preorder iteration of positions in this tree
+
+        Preorder: The root is visited first, then the children are visited in order (left then right)"""
+
+        if not self.is_empty():
+            for p in self._subtree_preorder(self.root()):
+                yield p
+
+    def _subtree_preorder(self, p):
+        yield p  # visit p before its subtree rooted at p
+        for c in self.children(p):  # for each child p
+            for other in self._subtree_preorder(c):  # do preorder of c's subtree
+                yield other  # yielding each to our caller
+
+    def positions(self):
+        return self.preorder()  # return entire preorder iteration
+
+    def postorder(self):
+        """
+        PostOrder: Opposite of pre-order, visit children in order (left then right), then visit the root
+        """
+
+        if not self.is_empty():
+            for p in self._subtree_postorder(self.root()):
+                yield p
+
+    def _subtree_postorder(self, p):
+        for c in self.children(p):
+            for other in self._subtree_postorder(c):
+                yield other
+        yield p
+
+    def breadthfirst(self):
+        if not self.is_empty():
+            fringe = LinkedQueue()
+            fringe.enqueue(self.root())
+            while not fringe.is_empty():
+                p = fringe.dequeue()
+                yield p
+                for c in self.children(p):
+                    fringe.enqueue(c)

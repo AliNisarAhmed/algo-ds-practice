@@ -1,9 +1,9 @@
 from binary_tree import BinaryTree
 
-class LinkedBinaryTree(BinaryTree):
 
+class LinkedBinaryTree(BinaryTree):
     class _Node:
-        __slots__ = '_element', '_parent', '_left', '_right'
+        __slots__ = "_element", "_parent", "_left", "_right"
 
         def __init__(self, element, parent=None, left=None, right=None):
             self._element = element
@@ -23,14 +23,14 @@ class LinkedBinaryTree(BinaryTree):
 
         def __eq__(self, other):
             return type(other) is type(self) and other._node is self._node
-        
+
     def _validate(self, p):
         """Return associated node, if position is valid"""
         if not isinstance(p, self.Position):
             raise TypeError("p must be proper Position type")
         if p._container is not self:
             raise ValueError("p does not belong to this container")
-        if p._node._parent is p._node: # a convention usef for deprecated nodes
+        if p._node._parent is p._node:  # a convention usef for deprecated nodes
             raise ValueError("p is no longer valid")
         return p._node
 
@@ -61,7 +61,7 @@ class LinkedBinaryTree(BinaryTree):
 
     def right(self, p):
         node = self._validate(p)
-        return self._make_position(node.right)
+        return self._make_position(node._right)
 
     def num_children(self, p):
         node = self._validate(p)
@@ -72,10 +72,10 @@ class LinkedBinaryTree(BinaryTree):
             count += 1
 
         return count
-    
+
     def _add_root(self, e):
         """Place element e at the root of an empty tree and return new Position"""
-        if self._root is not None: 
+        if self._root is not None:
             raise ValueError("Root exists")
         self._size = 1
         self._root = self._Node(e)
@@ -114,7 +114,7 @@ class LinkedBinaryTree(BinaryTree):
         child = node._left if node._left else node._right
 
         if child is not None:
-            child._parent = node._parent # childs grandparent becomes parent
+            child._parent = node._parent  # childs grandparent becomes parent
 
         if node is self._root:
             self._root = child
@@ -126,7 +126,7 @@ class LinkedBinaryTree(BinaryTree):
                 parent._right = child
 
         self._size -= 1
-        node._parent = node # convention for deprecated nodes
+        node._parent = node  # convention for deprecated nodes
 
         return node._element
 

@@ -29,6 +29,7 @@ If T is proper: than following additional properties:
 
 from tree import Tree
 
+
 class BinaryTree(Tree):
     """
     Abstract class
@@ -43,7 +44,6 @@ class BinaryTree(Tree):
     def right(self, p):
         """Return p's right child"""
         raise NotImplementedError("must be implemented by a subclass")
-
 
     # ---- concrete methods implemented in this class ----
 
@@ -63,3 +63,32 @@ class BinaryTree(Tree):
             yield self.left(p)
         if self.right(p) is not None:
             yield self.right(p)
+
+    def inorder(self):
+        """
+        Inorder:
+            visit root after ALL the positions in the Left subtree,
+            but before ALL the positions in the right subtree
+
+        Inorder traversal can only be applied to Binary Trees (since they have order)
+        Example: Evaluating math expressions uses inorder traversal
+        """
+
+        if not self.is_empty():
+            for p in self._subtree_inorder(self.root()):
+                yield p
+
+    def _subtree_inorder(self, p):
+
+        if self.left(p) is not None:
+            for other in self._subtree_inorder(self.left(p)):
+                yield other
+
+        yield p
+
+        if self.right(p) is not None:
+            for other in self._subtree_inorder(self.right(p)):
+                yield other
+
+    def positions(self):
+        return self.inorder()
