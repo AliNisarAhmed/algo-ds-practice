@@ -58,6 +58,9 @@ class Tree:
     def _height1(self):
         """
         Height is the max number of ancestors of any leaf of a tree
+        Height is the distance to the farthest leaf
+
+        Height is equal to the maximum of the depths of its leaf positions
 
         The method below is not very efficient
         assuming self.positions is O(n):

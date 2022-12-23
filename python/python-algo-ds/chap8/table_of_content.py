@@ -1,4 +1,5 @@
 from linked_binary_tree import LinkedBinaryTree
+from euler_tour import EulerTour
 
 
 def preorder_indent(T, p, d):
@@ -29,6 +30,17 @@ def preorder_label(T, p, d=0, path=[]):
     path.pop()
 
 
+class PreorderPrintIndentedTour(EulerTour):
+    def _hook_previsit(self, p, d, path):
+        print(2 * d * " " + str(p.element()))
+
+
+class PreorderPrintIndentedLabeledTour(EulerTour):
+    def _hook_previsit(self, p, d, path):
+        label = ".".join(str(j + 1) for j in path)
+        print(2 * d * " " + label, p.element())
+
+
 if __name__ == "__main__":
     t = LinkedBinaryTree()
     root = t._add_root("abc")
@@ -39,3 +51,9 @@ if __name__ == "__main__":
     t._add_left(right, "pqr")
     t._add_right(right, "stu")
     preorder_label(t, root)
+
+    tour = PreorderPrintIndentedTour(t)
+    tour.execute()
+
+    labeled_tour = PreorderPrintIndentedLabeledTour(t)
+    labeled_tour.execute()

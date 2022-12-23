@@ -104,7 +104,10 @@ class LinkedBinaryTree(BinaryTree):
         return old
 
     def _delete(self, p):
-        """Delete the node at Position p, and replace it with its child, if any"""
+        """
+        Delete the node at Position p, and replace it with its child, if any
+        Note: deletes only when a node has 1 children, throws in case of two children
+        """
 
         node = self._validate(p)
 

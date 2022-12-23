@@ -25,6 +25,7 @@ If T is proper: than following additional properties:
     2. h + 1 <= ne <= 2^h
     3. h <= ni <= 2^h - 1
     4. log(n + 1) - 1 <= h <= (n - 1) / 2
+    5. ne = ni + 1
 """
 
 from tree import Tree
