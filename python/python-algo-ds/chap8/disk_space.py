@@ -4,6 +4,8 @@ Computing the size of a directory is a postorder traversal
     before the size of a directory can be calculated
 """
 
+from euler_tour import EulerTour
+
 
 def disk_space(T, p):
     subtotal = (
@@ -12,3 +14,8 @@ def disk_space(T, p):
     for c in T.children(p):
         subtotal += disk_space(T, c)
     return subtotal
+
+
+class DiskSpaceTour(EulerTour):
+    def _hook_postvisit(self, p, d, path, results):
+        return p.element().space() + sum(results)
