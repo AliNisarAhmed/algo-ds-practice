@@ -131,3 +131,14 @@ class Tree:
                 yield p
                 for c in self.children(p):
                     fringe.enqueue(c)
+
+
+# R-8.6
+# Since if we add a node to any improper tree, it will become proper,
+# we can achieve the goal using a sentinel node at the root of T'
+
+# R-8.21
+# R-8.22
+# Pre-order: -/x+313+-952+x37-46
+# Postorder: 31+3x95-2+/374-x6+-
+# Inorder:   3+1x3/9-5+2/3x7-4+6

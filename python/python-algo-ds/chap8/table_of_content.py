@@ -47,10 +47,14 @@ if __name__ == "__main__":
     left = t._add_left(root, "def")
     right = t._add_right(root, "ghi")
     t._add_left(left, "jkl")
-    t._add_right(left, "mno")
+    right2 = t._add_right(left, "mno")
     t._add_left(right, "pqr")
-    t._add_right(right, "stu")
+    right3 = t._add_right(right, "stu")
+    t._add_left(right2, "vwx")
+
     preorder_label(t, root)
+
+    print(f"left leaves count: {t.count_left_leaves()}")
 
     tour = PreorderPrintIndentedTour(t)
     tour.execute()

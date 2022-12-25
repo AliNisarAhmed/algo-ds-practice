@@ -1,4 +1,5 @@
 from euler_tour import EulerTour
+from linked_binary_tree import MutableLinkedBinaryTree
 
 
 class BinaryEulerTour(EulerTour):
@@ -25,7 +26,7 @@ class BinaryEulerTour(EulerTour):
 
         if self._tree.right(p) is not None:
             path.append(1)  # See note in docstring
-            results[1] = self._tour(self._tree.rigt(p), d + 1, path)
+            results[1] = self._tour(self._tree.right(p), d + 1, path)
             path.pop()
 
         answer = self._hook_postvisit(p, d, path, results)
@@ -37,3 +38,38 @@ class BinaryEulerTour(EulerTour):
         To be overriden
         """
         pass
+
+
+# R-8.17
+class LevelNumberEulerTour(BinaryEulerTour):
+    def _tour(self, p, d, path, level=0):
+        if self._tree.left(p) is not None:
+            self._tour(self._tree.left(p), d + 1, path, 2 * level + 1)
+
+        if self._tree.right(p) is not None:
+            self._tour(self._tree.right(p), d + 1, path, 2 * level + 2)
+        print(level)
+
+
+if __name__ == "__main__":
+    t = MutableLinkedBinaryTree()
+    root = t.add_root("a")
+    b = t.add_left(root, "b")
+    c = t.add_right(root, "c")
+    d = t.add_left(b, "d")
+    e = t.add_right(b, "e")
+    f = t.add_left(c, "f")
+    g = t.add_right(c, "g")
+
+    t.add_left(d, "h")
+    t.add_right(d, "h")
+    t.add_left(e, "h")
+    t.add_right(e, "h")
+    t.add_left(f, "h")
+    t.add_right(f, "h")
+    t.add_left(g, "h")
+    t.add_right(g, "h")
+
+    tour = LevelNumberEulerTour(t)
+
+    tour.execute()

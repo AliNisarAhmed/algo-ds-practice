@@ -14,7 +14,7 @@ class ExpressionTree(LinkedBinaryTree):
         and the expression tree will have that value at an isolated node
 
         in a three-parameter version, token should be an operator,
-        and left and right should be existing ExpressTree instances that
+        and left and right should be existing ExpressionTree instances that
         become the operands for the binary operator
         """
         super().__init__()

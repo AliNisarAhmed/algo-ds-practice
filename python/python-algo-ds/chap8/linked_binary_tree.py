@@ -157,3 +157,42 @@ class LinkedBinaryTree(BinaryTree):
             node._right = t2._root
             t2._root = None
             t2._size = 0
+
+
+# R-8.15
+class MutableLinkedBinaryTree(LinkedBinaryTree):
+    """
+    A class that provides public mutators of the LinkedBinaryTree class
+    """
+
+    def add_root(self, e):
+        return self._add_root(e)
+
+    def add_left(self, p, e):
+        return self._add_left(p, e)
+
+    def add_right(self, p, e):
+        return self._add_right(p, e)
+
+    def replace(self, p, e):
+        return self._replace(p, e)
+
+    def delete(self, p):
+        return self._delete(p)
+
+    def attach(self, p, t1, t2):
+        return self._attach(p, t1, t2)
+
+
+# R-8.16
+# Level numbering function f
+
+# let f(p) be an integer defined as:
+
+# if p is root, then f(p) = 0
+# if p is the left child of q, then  f(p) = 2 x f(q) + 1
+# if p is the right child of q, then f(p) = 2 x f(q) + 2
+
+# Now show that
+# for every position p of T, f(p) <= 2^n - 2
+# Show an example of a BT with 7 nodes that attains the above upper bound on f(p)

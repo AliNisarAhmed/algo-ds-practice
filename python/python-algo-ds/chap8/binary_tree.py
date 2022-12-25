@@ -65,6 +65,25 @@ class BinaryTree(Tree):
         if self.right(p) is not None:
             yield self.right(p)
 
+    # R-8.5
+    def _count_left_leaves_rec(self, p):
+        if p is None:
+            return 0
+
+        left_child = self.left(p)
+        count = 0
+
+        if left_child is not None and len(list(self.children(left_child))) == 0:
+            count += 1
+
+        for c in self.children(p):
+            count += self._count_left_leaves_rec(c)
+
+        return count
+
+    def count_left_leaves(self):
+        return self._count_left_leaves_rec(self.root())
+
     def inorder(self):
         """
         Inorder:
@@ -93,3 +112,58 @@ class BinaryTree(Tree):
 
     def positions(self):
         return self.inorder()
+
+    # R-8.10
+    def num_children(self, p):
+        count = 0
+        if self.left(p) is not None:
+            count += 1
+        if self.right(p) is not None:
+            count += 1
+
+        return count
+
+
+# R-8.7
+# What is the max and min of number of internal and external nodes
+# in an improper binary tree with n nodes
+# Answer
+# Max of internal = n - 1 (just have a straight line of nodes)
+# Min of internal = (n - 1) / 2
+# Max of external = (n + 2) / 2
+# Min of external = 1 (When internal are max, external are min, so the first case above)
+
+# R-8.8
+# What is the minimum number of external nodes for a proper BT with height h:
+# h - 1
+# What is the max number of external nodes for a proper BT with height h
+# 2^h
+
+# R-8.12
+# Expression is (6 / (1 - (5 / 7)))
+
+# ------------------------------------------------------------------------------------------
+
+# R-8.18
+# Array based BT representation pseudo-algos
+
+# def root(self, p):
+#     return self._data[0]
+#
+# def parent(self, p):
+#     if p.level is odd:
+#         return p.level - 1 / 2
+#     else:
+#         reurn p.level - 2 / 2
+#
+# def left(self, p):
+#     return p.level * 2 + 1
+#
+# def right(self, p):
+#     return p.level * 2 + 2
+#
+# def is_leaf(self, p):
+#     return self.left(p) is None and self.right(p) is None
+#
+# def is_root(self, p):
+#     return p.level == 0
