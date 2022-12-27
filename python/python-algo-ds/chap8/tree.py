@@ -133,6 +133,26 @@ class Tree:
                     fringe.enqueue(c)
 
 
+# C-8.35
+def are_trees_isomorphic(t1, t2):
+    nc1 = t1.num_children()
+    nc2 = t2.num_children
+
+    if nc1 == 0 and nc2 == 0:
+        return True
+
+    if nc1 != nc2:
+        return False
+
+    for (c1, c2) in list(zip(t1.children(), t2.children())):
+        res = are_trees_isomorphic(c1, c2)
+
+        if res is False:
+            return False
+
+    return True
+
+
 # R-8.6
 # Since if we add a node to any improper tree, it will become proper,
 # we can achieve the goal using a sentinel node at the root of T'
@@ -142,3 +162,22 @@ class Tree:
 # Pre-order: -/x+313+-952+x37-46
 # Postorder: 31+3x95-2+/374-x6+-
 # Inorder:   3+1x3/9-5+2/3x7-4+6
+
+# R-8.23
+# Is it possible for postorder and preorder to be the same for a tree with more than 1 node?
+# No
+# Is it possible for postorder and preorder to be reverse?
+# Yes - Example - tree with 2 nodes
+
+# R-8.24
+# Above questions for proper BTs
+# Answer: No and No
+
+# R-8.25
+# {1}
+# {2, 3 , 4}
+# {3, 4, 5, 6}
+# {4, 5, 6, 7, 8, 9, 10, 11}
+# {5, 6, 7, 8, 9, 10, 11}
+# {6, 7, 8, 9, 10, 11}
+# ... and so on to {}

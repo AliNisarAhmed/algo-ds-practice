@@ -158,6 +158,17 @@ class LinkedBinaryTree(BinaryTree):
             t2._root = None
             t2._size = 0
 
+    # C-8.38
+    def _delete_subtree(self, p):
+        parent = self.parent(p)
+
+        if p == self.left(parent):
+            parent._node._left = None
+        else:
+            parent._node._right = None
+
+        self._size = len(list(self.positions()))
+
 
 # R-8.15
 class MutableLinkedBinaryTree(LinkedBinaryTree):
@@ -182,6 +193,29 @@ class MutableLinkedBinaryTree(LinkedBinaryTree):
 
     def attach(self, p, t1, t2):
         return self._attach(p, t1, t2)
+
+
+if __name__ == "__main__":
+    t = MutableLinkedBinaryTree()
+    root = t.add_root(1)
+    two = t.add_left(root, 2)
+    three = t.add_right(root, 3)
+
+    t.add_left(two, 4)
+    t.add_right(two, 5)
+    four = t.add_left(three, 6)
+    five = t.add_right(three, 7)
+
+    t._add_left(four, 8)
+    t._add_left(five, 9)
+    t._add_right(four, 10)
+    t._add_right(five, 10)
+
+    print(t._size)
+    t._delete_subtree(two)
+    print(t._size)
+    t._delete_subtree(three)
+    print(t._size)
 
 
 # R-8.16

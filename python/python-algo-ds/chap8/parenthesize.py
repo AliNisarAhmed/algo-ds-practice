@@ -21,6 +21,10 @@ def parenthesize(T, p):
         print(")", end="")
 
 
+# R-8.26
+# - ( / ( x ( + 3 1) 3) + ( - 9 5) 2) + ( x (3 - (7 4))) 6
+
+
 class ParenthesizeTour(EulerTour):
     def _hook_previsit(self, p, d, path):
 
@@ -50,3 +54,33 @@ if __name__ == "__main__":
 
     tour = ParenthesizeTour(t)
     tour.execute()
+
+    print("------------------")
+
+    t = LinkedBinaryTree()
+    root = t._add_root("-")
+    left = t._add_left(root, "/")
+    right = t._add_right(root, "+")
+
+    x = t._add_left(left, "x")
+    plus1 = t._add_left(x, "+")
+    t._add_right(x, "3")
+    t._add_left(plus1, "3")
+    t._add_right(plus1, "1")
+
+    plus2 = t._add_right(left, "+")
+    minus = t._add_left(plus2, "-")
+    t._add_left(minus, "9")
+    t._add_right(minus, "5")
+    t._add_right(plus2, 2)
+
+    mul = t._add_left(right, "x")
+    t._add_right(right, "6")
+    t._add_left(mul, "3")
+    minus2 = t._add_right(mul, "-")
+    t._add_left(minus2, "7")
+    t._add_right(minus2, "4")
+
+    parenthesize(t, t.root())
+
+    print("\n")
