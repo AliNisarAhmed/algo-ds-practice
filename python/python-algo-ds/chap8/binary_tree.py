@@ -113,6 +113,11 @@ class BinaryTree(Tree):
     def positions(self):
         return self.inorder()
 
+    def print(self):
+        for p in self.positions():
+            print(p.element(), end=" -> ")
+        print("--- end tree--")
+
     # R-8.10
     def num_children(self, p):
         count = 0

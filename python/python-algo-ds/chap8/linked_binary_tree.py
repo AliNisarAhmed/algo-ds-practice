@@ -66,8 +66,6 @@ class LinkedBinaryTree(BinaryTree):
     def num_children(self, p):
         node = self._validate(p)
         count = 0
-        if node._left is not None:
-            count += 1
         if node._right is not None:
             count += 1
 
@@ -169,6 +167,12 @@ class LinkedBinaryTree(BinaryTree):
 
         self._size = len(list(self.positions()))
 
+    # C-8.39
+    def _swap(self, p, q):
+        p_element = p._node._element
+        p._node._element = q._node._element
+        q._node._element = p_element
+
 
 # R-8.15
 class MutableLinkedBinaryTree(LinkedBinaryTree):
@@ -195,6 +199,32 @@ class MutableLinkedBinaryTree(LinkedBinaryTree):
         return self._attach(p, t1, t2)
 
 
+# C-8.40
+class SentinelLinkedBinaryTree:
+    def _add_root(self, e):
+        if self._sentinel._left is not None:
+            raise ValueError("Root already exists")
+        self._sentinel._left = self._Node(e)
+        self._size = 1
+        return self._make_position(self._root)
+
+    def _delete(self, p):
+        node = self._validate(p)
+        if self.num_children(p) == 2:
+            raise ValueError("Cannot delete with two children")
+
+
+# C-8.41 and 8.42
+def clone(t: LinkedBinaryTree) -> LinkedBinaryTree:
+    pass
+
+
+# C-8.43
+# preorder:  ABEFCDG vs ABEFCDG (match)
+# postorder: EFBCGDA vs FEGDCBA (no match)
+# inorder:   EBFACDG vs EFBCGDA (same as postorder of the left one)
+
+
 if __name__ == "__main__":
     t = MutableLinkedBinaryTree()
     root = t.add_root(1)
@@ -203,13 +233,19 @@ if __name__ == "__main__":
 
     t.add_left(two, 4)
     t.add_right(two, 5)
-    four = t.add_left(three, 6)
-    five = t.add_right(three, 7)
+    six = t.add_left(three, 6)
+    seven = t.add_right(three, 7)
 
-    t._add_left(four, 8)
-    t._add_left(five, 9)
-    t._add_right(four, 10)
-    t._add_right(five, 10)
+    t._add_left(six, 8)
+    t._add_left(seven, 9)
+    t._add_right(six, 10)
+    t._add_right(seven, 11)
+
+    print("before swap: ")
+    t.print()
+    t._swap(three, seven)
+    print("after swap: ")
+    t.print()
 
     print(t._size)
     t._delete_subtree(two)
