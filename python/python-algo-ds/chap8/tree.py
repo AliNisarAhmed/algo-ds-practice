@@ -132,6 +132,28 @@ class Tree:
                 for c in self.children(p):
                     fringe.enqueue(c)
 
+    def _print_p_and_height(self, p):
+        if self.is_leaf(p):
+            print(f"P = {p.element()} with height = {0}")
+            return 0
+        height = 1 + max([self._print_p_and_height(c) for c in p.children()])
+        print(f"P = {p.element()} with height = {height}")
+        return height
+
+    def print_p_and_height(self):
+        return self._print_p_and_height(self.root())
+
+    def _print_p_and_depth(self, p, depth):
+        if p is None:
+            return
+        print(f"p is {p.element()} with depth = {depth}")
+
+        self._print_p_and_depth(p.left(), depth + 1)
+        self._print_p_and_depth(p.right(), depth + 1)
+
+    def print_p_and_depth(self):
+        return self._print_p_and_depth(self.root(), 0)
+
 
 # C-8.35
 def are_trees_isomorphic(t1, t2):

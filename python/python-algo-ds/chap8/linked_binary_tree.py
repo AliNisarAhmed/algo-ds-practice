@@ -214,10 +214,51 @@ class SentinelLinkedBinaryTree:
             raise ValueError("Cannot delete with two children")
 
 
-# C-8.41 and 8.42
+# C-8.41 - clone using _attach
 def clone(t: LinkedBinaryTree) -> LinkedBinaryTree:
-    pass
+    def _clone(
+        t: LinkedBinaryTree, p: LinkedBinaryTree.Position | None
+    ) -> LinkedBinaryTree:
+        if p is None:
+            return LinkedBinaryTree()
 
+        new_tree = LinkedBinaryTree()
+        new_root = new_tree._add_root(p.element())
+
+        new_tree._attach(new_root, _clone(t, t.left(p)), _clone(t, t.right(p)))
+
+        return new_tree
+
+    return _clone(t, t.root())
+
+
+# C-8.42 - clone using add_left and add_right
+def clone2(t: LinkedBinaryTree) -> LinkedBinaryTree:
+    def _clone(old_tree, old_p, new_tree, new_p):
+        if old_p is None:
+            return
+
+        old_left = old_tree.left(old_p)
+        old_right = old_tree.right(old_p)
+
+        if old_left is not None:
+            new_left = new_tree._add_left(new_p, old_left.element())
+            _clone(old_tree, old_left, new_tree, new_left)
+
+        if old_right is not None:
+            new_right = new_tree._add_right(new_p, old_right.element())
+            _clone(old_tree, old_right, new_tree, new_right)
+
+    old_root = t.root()
+    new_tree = LinkedBinaryTree()
+    new_root = new_tree._add_root(old_root.element())
+
+    _clone(t, old_root, new_tree, new_root)
+
+    return new_tree
+
+
+#
 
 # C-8.43
 # preorder:  ABEFCDG vs ABEFCDG (match)
@@ -226,32 +267,46 @@ def clone(t: LinkedBinaryTree) -> LinkedBinaryTree:
 
 
 if __name__ == "__main__":
-    t = MutableLinkedBinaryTree()
-    root = t.add_root(1)
-    two = t.add_left(root, 2)
-    three = t.add_right(root, 3)
+    t = LinkedBinaryTree()
+    root = t._add_root(1)
+    two = t._add_left(root, 2)
+    three = t._add_right(root, 3)
 
-    t.add_left(two, 4)
-    t.add_right(two, 5)
-    six = t.add_left(three, 6)
-    seven = t.add_right(three, 7)
+    t._add_left(two, 4)
+    t._add_right(two, 5)
+    six = t._add_left(three, 6)
+    seven = t._add_right(three, 7)
 
     t._add_left(six, 8)
     t._add_left(seven, 9)
     t._add_right(six, 10)
     t._add_right(seven, 11)
 
-    print("before swap: ")
-    t.print()
-    t._swap(three, seven)
-    print("after swap: ")
-    t.print()
+    # print("before swap: ")
+    # t.print()
+    # t._swap(three, seven)
+    # print("after swap: ")
+    # t.print()
 
-    print(t._size)
-    t._delete_subtree(two)
-    print(t._size)
-    t._delete_subtree(three)
-    print(t._size)
+    # print(t._size)
+    # t._delete_subtree(two)
+    # print(t._size)
+    # t._delete_subtree(three)
+    # print(t._size)
+
+    # cloned_t = clone(t)
+    # t.print()
+    # cloned_t.print()
+    # cloned_t._root._element = 15
+    # t.print()
+    # cloned_t.print()
+
+    cloned_t = clone2(t)
+    t.print()
+    cloned_t.print()
+    cloned_t._root._element = 15
+    t.print()
+    cloned_t.print()
 
 
 # R-8.16
