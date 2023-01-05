@@ -136,23 +136,43 @@ class Tree:
         if self.is_leaf(p):
             print(f"P = {p.element()} with height = {0}")
             return 0
-        height = 1 + max([self._print_p_and_height(c) for c in p.children()])
+        height = 1 + max([self._print_p_and_height(c) for c in self.children(p)])
         print(f"P = {p.element()} with height = {height}")
         return height
 
+    # C-8.44
     def print_p_and_height(self):
         return self._print_p_and_height(self.root())
 
     def _print_p_and_depth(self, p, depth):
         if p is None:
-            return
+            return depth
         print(f"p is {p.element()} with depth = {depth}")
 
-        self._print_p_and_depth(p.left(), depth + 1)
-        self._print_p_and_depth(p.right(), depth + 1)
+        for c in self.children(p):
+            self._print_p_and_depth(c, depth + 1)
 
+    # C-8.45
     def print_p_and_depth(self):
         return self._print_p_and_depth(self.root(), 0)
+
+        # C-8.46
+        # Path length is the sum of the depths of all positions in T
+
+    def path_length(self):
+        _, pl = self._path_length(self.root(), 0)
+        return pl
+
+    def _path_length(self, p, depth):
+        if self.is_leaf(p):
+            return (depth, 0)
+
+        path_length = 0
+        for c in self.children(p):
+            (d, pl) = self._path_length(c, depth + 1)
+            path_length = path_length + d + pl
+
+        return (depth, path_length)
 
 
 # C-8.35

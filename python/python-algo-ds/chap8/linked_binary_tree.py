@@ -308,6 +308,10 @@ if __name__ == "__main__":
     t.print()
     cloned_t.print()
 
+    t.print_p_and_depth()
+    t.print_p_and_height()
+    print(f"Path Length: {t.path_length()}")
+
 
 # R-8.16
 # Level numbering function f
