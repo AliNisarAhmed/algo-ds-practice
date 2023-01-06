@@ -17,12 +17,16 @@ class LinkedBinaryTree(BinaryTree):
         def __init__(self, container, node):
             self._container = container
             self._node = node
+            self._height = 0
 
         def element(self):
             return self._node._element
 
         def __eq__(self, other):
             return type(other) is type(self) and other._node is self._node
+
+        def set_height(self, h):
+            self._height = h
 
     def _validate(self, p):
         """Return associated node, if position is valid"""
@@ -67,6 +71,9 @@ class LinkedBinaryTree(BinaryTree):
         node = self._validate(p)
         count = 0
         if node._right is not None:
+            count += 1
+
+        if node._left is not None:
             count += 1
 
         return count
@@ -173,6 +180,80 @@ class LinkedBinaryTree(BinaryTree):
         p._node._element = q._node._element
         q._node._element = p_element
 
+    # --------------------------------------------------------------------------
+    # C-8.50
+    # Design algos for preorder_next, inorder_next and postorder_next
+    # and what are their worst-case running times
+
+    # Worst case for all these algos is O(h) where h is height of the tree
+    def preorder_next(self, p):
+        left = self.left(p)
+        if left is not None:
+            return left
+
+        right = self.right(p)
+        if right is not None:
+            return right
+
+        # return right child available of first ancestor up the chain
+        return self._first_right_ancestor(p)
+
+    def _first_right_ancestor(self, p):
+        if p is None:
+            return None
+
+        parent = self.parent(p)
+
+        if parent is None:
+            return None
+
+        right_sibling = self.right(parent)
+        if right_sibling != p:
+            return right_sibling
+        else:
+            return self._first_right_ancestor(parent)
+
+    def inorder_next(self, p):
+        right = self.right(p)
+        if right is not None:
+            return self._left_most(right)
+
+        return self._first_ancestor_not_right_child(p)
+
+    def _first_ancestor_not_right_child(self, p):
+        if p is None:
+            return None
+        parent = self.parent(p)
+
+        if parent is None:
+            return None
+
+        if self.right(parent) == p:
+            return self._first_ancestor_not_right_child(parent)
+        else:
+            return parent
+
+    def postorder_next(self, p):
+        parent = self.parent(p)
+        if parent is None:
+            return None
+
+        if self.right(parent) == p:
+            return parent
+        else:
+            return self._left_most(self.right(parent))
+
+    def _left_most(self, p):
+        if p is None:
+            return p
+
+        if self.left(p) is not None:
+            return self._left_most(self.left(p))
+
+        return p
+
+    # -------------------------------------------------------------------------
+
 
 # R-8.15
 class MutableLinkedBinaryTree(LinkedBinaryTree):
@@ -272,15 +353,15 @@ if __name__ == "__main__":
     two = t._add_left(root, 2)
     three = t._add_right(root, 3)
 
-    t._add_left(two, 4)
-    t._add_right(two, 5)
+    four = t._add_left(two, 4)
+    five = t._add_right(two, 5)
     six = t._add_left(three, 6)
     seven = t._add_right(three, 7)
 
-    t._add_left(six, 8)
-    t._add_left(seven, 9)
-    t._add_right(six, 10)
-    t._add_right(seven, 11)
+    eight = t._add_left(six, 8)
+    nine = t._add_left(seven, 9)
+    ten = t._add_right(six, 10)
+    eleven = t._add_right(seven, 11)
 
     # print("before swap: ")
     # t.print()
@@ -301,16 +382,22 @@ if __name__ == "__main__":
     # t.print()
     # cloned_t.print()
 
-    cloned_t = clone2(t)
-    t.print()
-    cloned_t.print()
-    cloned_t._root._element = 15
-    t.print()
-    cloned_t.print()
+    # cloned_t = clone2(t)
+    # t.print()
+    # cloned_t.print()
+    # cloned_t._root._element = 15
+    # t.print()
+    # cloned_t.print()
 
-    t.print_p_and_depth()
-    t.print_p_and_height()
-    print(f"Path Length: {t.path_length()}")
+    # ---------------------------------
+    # t.print_p_and_depth()
+    # t.print_p_and_height()
+    # print(f"Path Length: {t.path_length()}")
+    # ---------------------------------------
+
+    # C-8.50 Testing
+    p = t.inorder_next(root)
+    print(p.element() if p is not None else None)
 
 
 # R-8.16
