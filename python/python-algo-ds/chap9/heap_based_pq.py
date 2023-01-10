@@ -102,3 +102,67 @@ class HeapPriorityQueue(PriorityQueueBase):
         start = self._parent(len(self) - 1)  # start at parent of last leaf
         for j in range(start, -1, -1):  # going to and including the root
             self._downheap(j)
+
+
+# ---- Exercises ----
+
+# R-9.2
+# Ranking by pre-order traversal already satisfies the heap order property
+# after that we only need heap completeness property for a BT to be called a heap
+
+# R-9.3
+# PQ
+# add(5,A)      -> (5,A)
+# add(4,B)      -> (4,B),(5,A)
+# add(7,F)      -> (4,B),(5,A),(7,f)
+# add(1,d)      -> (1,d),(4,B),(5,A),(7,f)
+# remove_min    -> (4,B),(5,A),(7,f)         -> (1,d)
+# add(3,j)      -> (3,j),(4,B),(5,A),(7,f)
+# add(6,l)      -> (3,j),(4,B),(5,A),(6,l),(7,f)
+# remove_min    -> (4,B),(5,A),(6,l),(7,f)   -> (3,j)
+# remove_min    -> (5,A),(6,l),(7,f)         -> (4,B)
+# add(8,G)      -> (5,A),(6,l),(7,f),(8,g)
+# remove_min    -> (6,l),(7,f),(8,g)         -> (5,A)
+# add(2,h)      -> (2,h),(6,l),(7,f),(8,g)
+# remove_min    -> (6,l),(7,f),(8,g)         -> (2,h)
+# remove_min    -> (7,f),(8,g)               -> (6,l)
+
+# R-9.10
+# At which position of a heap might the 3rd smallest key be stored?
+# Has to be the right child of root
+
+# R-9.11
+# Where would the largest key be in the heap
+# Any of the leaf nodes of the BT
+
+# R-9.12
+# how can a max-oriented PQ with numeric keys be implemented with a min-oriented PQ?
+# Just negate the numbers and use normal PQ
+
+# R-9.14
+# let T be a complete BT with positon p stores value = its level numbering
+# is it a heap?
+# Answer: Yes, because each number stores either 2*parent + 1 or 2 * parent + 2
+# hence more than its parent, and the tree is complete
+
+# R-9.15
+# Explain why the description of down-heap bubbling does not consider the case in which
+# position p has a right child but not a left child
+# because by heap completeness property it is not possible for a heap to have a right
+# child but not a left child
+
+# R-9.16
+# heap H with 7 distinct keys - can any tree traversal yield a decreasing or increasing order?
+# Pre-order - yes, decreasing order if the heap is min-oriented
+# Post-order - yes, increasing order if the heap is max-oriented
+# In-inorder - no, it is not possible
+
+# R-9.17
+# let H be a heap storing 15 entries with array based representation
+# What is the sequence of indices visited in each tree traversal:
+# Pre-order
+# 0, 1, 3, 7, 15, 8, 4, 9, 10, 2, 5, 11, 12, 6, 13, 14
+# Post-order
+# 15, 7, 8, 3, 9, 10, 4, 1, 11, 5, 12, 13, 6, 14, 2, 0
+# in-order
+# 15, 7, 3, 8, 1, 9, 4, 10, 0, 11, 5, 12, 2, 13, 6, 14
