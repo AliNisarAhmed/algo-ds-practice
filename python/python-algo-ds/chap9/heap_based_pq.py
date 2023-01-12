@@ -44,6 +44,14 @@ class HeapPriorityQueue(PriorityQueueBase):
             self._swap(j, parent)
             self._upheap(parent)
 
+    # C-9.30
+    # non-recursive upheap
+    def _upheap_iter(self, j):
+        parent = self._parent(j)
+        while parent > 0 and self._data[j] < self._data[parent]:
+            self._swap(j, parent)
+            parent = self._parent(parent)
+
     def _downheap(self, j):
         """Determine smallest child and swap with it, recurse"""
         if self._has_left(j):
@@ -54,8 +62,23 @@ class HeapPriorityQueue(PriorityQueueBase):
                 if self._data[right] < self._data[left]:
                     small_child = right
             if self._data[small_child] < self._data[j]:
-                self._swap(small_child, j)
+                self._swap(j, small_child)
                 self._downheap(small_child)
+
+    # C-9.31
+    # non-recursive downheap
+    def _downheap_iter(self, j):
+        current = j
+        while self._has_left(current):
+            left = self._left(current)
+            small_child = left
+            if self._has_right(current):
+                right = self._right(current)
+                if self._data[right] < self._data[left]:
+                    small_child = right
+            if self._data[small_child] < self._data[current]:
+                self._swap(current, small_child)
+                current = small_child
 
     # ---- PUBLIC ------
 
@@ -89,10 +112,10 @@ class HeapPriorityQueue(PriorityQueueBase):
     def remove_min(self):
         if self.is_empty():
             raise ValueError("PQ is empty")
-        item = self._data[0]
-        self._data[0] = self._data.pop()
+        self._swap(0, len(self._data) - 1)
+        item = self._data.pop()
         self._downheap(0)
-        return item._key, item._value
+        return (item._key, item._value)
 
     def _heapify(self):
         """Bottom up heap construction
@@ -102,6 +125,22 @@ class HeapPriorityQueue(PriorityQueueBase):
         start = self._parent(len(self) - 1)  # start at parent of last leaf
         for j in range(start, -1, -1):  # going to and including the root
             self._downheap(j)
+
+    def to_list(self):
+        result = []
+        while not self.is_empty():
+            (_, value) = self.remove_min()
+            result.append(value)
+        return result
+
+
+if __name__ == "__main__":
+    pq = HeapPriorityQueue()
+    pq.add(0, "a")
+    pq.add(-1, "b")
+    pq.add(-2, "c")
+
+    print(pq.to_list())
 
 
 # ---- Exercises ----
@@ -166,3 +205,7 @@ class HeapPriorityQueue(PriorityQueueBase):
 # 15, 7, 8, 3, 9, 10, 4, 1, 11, 5, 12, 13, 6, 14, 2, 0
 # in-order
 # 15, 7, 3, 8, 1, 9, 4, 10, 0, 11, 5, 12, 2, 13, 6, 14
+
+# R.9-24
+# n insertions in a heap that require Sigma(n logn)
+# Design the heap such that each insertion takes log n time
