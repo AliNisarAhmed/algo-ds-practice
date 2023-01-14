@@ -133,15 +133,98 @@ class HeapPriorityQueue(PriorityQueueBase):
             result.append(value)
         return result
 
+    # C-9.32
+    def find_insertion_position(self):
+        z = None
+        if self.is_empty():
+            z = self.root()
+        else:
+            z = self._last  # assume reference to last node exists as _last instance
+            while not self.is_root(z) and z == self.right(self.parent(z)):
+                # while z is the right child of its parent
+                z = self.parent(z)
+            if not self.is_root(z):
+                # if we stop before root, move to the right child
+                z = self.right(self.parent(z))
+            while not self.is_leaf(z):
+                # find the bottom most left child
+                z = self.left(z)
+        return z
+
+    # -------------------------------------------------------------------
+    # C-9.35
+    def is_leaf(self, j):
+        return not self._has_right(j) and not self._has_left(j)
+
+    def find_less_than(self, k):
+        result = []
+        self._find_less_than(k, 0, result)
+        return result
+
+    def _find_less_than(self, k, j, acc):
+        print("j: ", j)
+        if self._data[j]._key < k:
+            print(self._data[j]._key)
+            acc.append(self._data[j]._key)
+            if self._has_left(j):
+                self._find_less_than(k, self._left(j), acc)
+            if self._has_right(j):
+                self._find_less_than(k, self._right(j), acc)
+
+    # -------------------------------------------------------------------
+
+    # C-9.39
+    def heap_push_pop(self, e):
+        """
+        Push element e on the list and then pop and return smallest item
+
+        If the newly pushed element becomes the smallest, return it immediately
+        else
+        the new element takes the position of the popped root and a downheap is performed
+        """
+        if self.is_empty():
+            return e
+        if e < self._data[0]._key:
+            return e
+        result = self._data[0]
+        self._data[0] = self._Item(e, e)
+        self._downheap(0)
+        return result._key
+
+    # -------------------------------------------------------------------
+
+    # C-9.40
+    def heap_replace(self, e):
+        """
+        Similar to heap_push_pop but equivalent to the pop being performed first
+        in other words, the new element cannot be returned as the smallest
+        """
+        if self.is_empty():
+            self.add(e, e)
+            return None
+        result = self._data[0]
+        self._data[0] = self._Item(e, e)
+        self._downheap(0)
+        return result._key
+
 
 if __name__ == "__main__":
     pq = HeapPriorityQueue()
     pq.add(0, "a")
     pq.add(-1, "b")
     pq.add(-2, "c")
+    pq.add(3, "d")
+    pq.add(4, "f")
+    pq.add(5, "g")
 
+    # print(pq.to_list())
+
+    # print(pq.find_less_than(2))
+
+    print("root: ", pq._data[0]._key)
+    print("heappushpop: ", pq.heap_replace(4))
+    print("root: ", pq._data[0]._key)
     print(pq.to_list())
-
 
 # ---- Exercises ----
 
@@ -209,3 +292,11 @@ if __name__ == "__main__":
 # R.9-24
 # n insertions in a heap that require Sigma(n logn)
 # Design the heap such that each insertion takes log n time
+
+# C-9.41 & C-9.42
+# To select top logn items from a list of n items
+# Take the n items list and construct a heap using bottom-up construction
+# which is O(n)
+# then call remove_min logn times to select top logn items
+# each of which takes log n time, hence total time is O(logn . logn)
+# which is still O(n)
