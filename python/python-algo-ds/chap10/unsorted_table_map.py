@@ -33,3 +33,34 @@ class UnsortedTableMap(MapBase):
     def __iter__(self):
         for item in self._table:
             yield item._key
+
+    # R-10.3 implement items ensuring it is O(n)
+    def items(self):
+        for item in self._table:
+            yield item._key, item._value
+
+    # R-10.3 what is the worst case time for inserting n kv pairs
+    # into UnsortedTableMap
+    # Answer: O(n^2)
+    # O(1) for first key
+    # O(2) for second key and so on
+    # for each key, we need to traverse the whole list in order
+    # to ensure it is not already present
+    # we cannot simply append it at the end
+
+    # R-10.6 which of the hash table collision-handling schemes could tolerate
+    # a load factor above 1 and which could not?
+    # Open addressing cannot, since it uses the same array supporting hash table
+    # Separate chaining can, since it uses a different array for each key position
+
+
+if __name__ == "__main__":
+    m = UnsortedTableMap()
+    m[1] = "A"
+    m[2] = "B"
+    m[3] = "Azlan"
+
+    for (k, v) in m.items():
+        print("Key: " + repr(k))
+        print("Value: " + repr(v))
+        print("----")
