@@ -107,3 +107,8 @@ class SortedTableMap(MapBase):
         while j < len(self._table) and (stop is None or self._table[j]._key < stop):
             yield (self._table[j]._key, self._table[j]._value)
             j += 1
+
+
+# R-10.18
+# Why hash table is not suitable for sorted map
+# because there is no way to ensure order after hashing

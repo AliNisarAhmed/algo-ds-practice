@@ -1,17 +1,20 @@
-from collections import MapBase
 from random import randrange
+from map_base import MapBase
 
 
 class HashMapBase(MapBase):
     """Abtract base class for map using hash-table with MAD compression"""
 
-    def __init__(self, cap=11, p=109345121):
+    def __init__(self, cap=11, p=109345121, load_factor=0.5):
         """Create an empty hash-table map"""
         self._table = cap * [None]  # bucket array
         self._n = 0  # number of entries in the map
         self._prime = p  # prime for MAD compression
         self._scale = 1 + randrange(p - 1)  # scale from 1 to p-1 for MAD
         self._shift = randrange(p)  # shift from 0 to p-1 for MAD
+        self._load_factor = load_factor
+        # Load factor: how much the underlying array is filled before resize is needed
+        # defaults to 50%
 
     def _hash_function(self, k):
         return (hash(k) * self._scale + self._shift) % self._prime % len(self._table)
@@ -26,7 +29,9 @@ class HashMapBase(MapBase):
     def __setitem__(self, k, v):
         j = self._hash_function(k)
         self._bucket_setitem(j, k, v)  # this call maintains self._n
-        if self._n > len(self._table) // 2:  # keep load factor <= 0.5
+        if self._n > int(
+            len(self._table) * self._load_factor
+        ):  # keep load factor <= given load factor
             self._resize(2 * len(self._table) - 1)
 
     def __delitem__(self, k):
@@ -41,3 +46,71 @@ class HashMapBase(MapBase):
         self._n = 0  # n recomputed during subsequent adds
         for (k, v) in old:
             self[k] = v  # this call updates _n
+
+
+# R-10.8 What would be a good has code for a string of form
+# "9X9XX99X9XX999999" where 9 is a digit and X is a letter
+# Answer: cyclic shhift or polynomial
+
+# R-10.9
+# h(i) = (3i + 5) mod 11 is the hash function
+# draw the resulting map using separate chaining
+# 12, 44, 13, 88, 23, 94, 11, 39, 20, 16, 5
+# [[13], [94, 39], _, _, _, [44, 88, 11], _, _, [12, 23], [16, 5], [20]]
+
+# R-10.10
+# Same as above, but assume linear probing
+# [13, 94, 39, 16, 5, 44, 88, 11, 12, 23, 20]
+
+# R-10.11
+# Same as above, but assume quadratic probing
+# [13, 94, 11, 20, _, 44, 88, 16, 12, 23, 39]
+
+# R-10.13
+# Worst case time for n entries in map with chaining? O(n^2), dump every entry into same bucket
+# Best case: O(n)
+
+# R-10.14
+# [_, _, [54, 28, 41], _, _, [18], _, _, _, _, [10, 36], _, [25, 38, 12, 90]]
+# Rehash above into table of size 19 using new hash function h(k) = 3k mod 17
+# [_, _, 12, 18, 41, 30, 36, 25, _, 54, _, _, 38, 10, _, _, 28, _, _]
+
+
+# --------------------------------------------------------------
+# R-10.12
+# Same as above but use double hashing
+# h'(k) = 7 - (k mod 7)
+# [13, 94, 23, 88, 39, 44, 11, 5, 12, 16, 20]
+
+
+def hash1(n):
+    return (3 * n + 5) % 11
+
+
+def hash2(n):
+    return 7 - (n % 7)
+
+
+def double_hashing(arr):
+    result = 11 * [None]
+
+    for n in arr:
+        hash_code = hash1(n)
+        print("hash_code: " + repr(hash_code))
+        if result[hash_code] is None:
+            result[hash_code] = n
+        else:
+            for i in range(1, 11, 1):
+                double_hash = (hash_code + i * hash2(n)) % 11
+                print(double_hash)
+                if result[double_hash] is None:
+                    result[double_hash] = n
+                    break
+
+    return result
+
+
+# --------------------------------------------------------------
+
+if __name__ == "__main__":
+    print(double_hashing([12, 44, 13, 88, 23, 94, 11, 39, 20, 16, 5]))

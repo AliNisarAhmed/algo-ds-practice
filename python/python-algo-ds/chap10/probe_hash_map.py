@@ -32,6 +32,22 @@ class ProbeHashMap(HashMapBase):
                 return (True, j)
             j = (j + 1) % len(self._table)  # keep looking (cyclically)
 
+    # R-10.17
+    # use Quadratic probing
+    def _find_slot_qp(self, j, k):
+        first_avail = None
+        for i in range(1, 100, 1):
+            if self._is_available(j):
+                if first_avail is None:
+                    first_avail = j
+                if self._table[j] is None:
+                    return (False, first_avail)
+            elif k == self._table[j]._key:
+                return (True, j)
+            j = (j + i * i) % len(self._table)
+        # if we could not find a space, raise error
+        raise ValueError("Space not available")
+
     def _bucket_getitem(self, j, k):
         found, s = self._find_slot(j, k)
         if not found:
