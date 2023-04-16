@@ -12,5 +12,14 @@ def shuffle(arr):
 
     return arr
 
+# going from back to front
 
-print(shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))
+
+def shuffle2(arr):
+    for i in range(len(arr) - 1, 0, -1):
+        j = randint(0, i)
+        arr[j], arr[i] = arr[i], arr[j]
+    return arr
+
+
+print(shuffle2([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))
