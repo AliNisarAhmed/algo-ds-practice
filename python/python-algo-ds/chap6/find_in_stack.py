@@ -21,9 +21,29 @@ def find_in_stack(s: ArrayStack, v):
 
     move_queue_to_stack(s, q)
 
+    move_stack_to_queue(s, q)
+
+    move_queue_to_stack(s, q)
+
     return found
+
+
+def move_stack_to_queue(s: ArrayStack, q: ArrayQueue):
+    while not s.is_empty():
+        q.enqueue(s.pop())
 
 
 def move_queue_to_stack(s: ArrayStack, q: ArrayQueue):
     while not q.is_empty():
         s.push(q.dequeue())
+
+
+if __name__ == "__main__":
+    S = ArrayStack()
+    S.push(1)
+    S.push(2)
+    S.push(3)
+    print(S._data)
+    res = find_in_stack(S, 3)
+    print(res)
+    print(S._data)

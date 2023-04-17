@@ -2,6 +2,7 @@
 from stack import ArrayStack, Empty
 
 
+# C-6.25
 class QueueWithTwoStack:
     def __init__(self):
         # enqueing stack

@@ -6,6 +6,7 @@ class Empty(Exception):
     pass
 
 
+# R-6.11
 class DeckQueue:
 
     def __init__(self):
@@ -74,9 +75,9 @@ class ArrayQueue:
         self._data[avail] = e
         self._size += 1
 
-    def _resize(self, cap):
+    def _resize(self, new_capacity):
         old = self._data
-        self._data = [None] * cap  # allocate list with new capacity
+        self._data = [None] * new_capacity  # allocate list with new capacity
         # we need this variable otherwise new arrays front would start
         # from the middle
         walk = self._front
@@ -85,6 +86,7 @@ class ArrayQueue:
             walk = (walk + 1) % len(old)
         self._front = 0  # front has been realigned
 
+    # C-6.29
     def rotate(self):
         """dequeue an element and then enqueue"""
         if self.is_empty():
@@ -101,7 +103,51 @@ def rotate_queue(q: ArrayQueue, count):
     for _ in range(count - 1):
         q.enqueue(q.dequeue())
 
-# 6-13 - Convert Deq from 12345678 to 12354678 using Queue
+
+# R-6.7
+# enqueue(5) [5]
+# enqueue(3) [5, 3]
+# dequeue()                 => 5
+# enqueue(2) [3, 2]
+# enqueue(8) [3, 2, 8]
+# dequeue()                 => 3
+# dequeue()                 => 2
+# enqueue(9) [8, 9]
+# enqueue(1) [8, 9, 1]
+# deque()                   => 8
+# enqueue(7) [9, 1, 7]
+# enqueue(6) [9, 1, 7, 6]
+# deque()                   => 9
+# deque()                   => 1
+# enqueue(4) [7, 6, 4]
+# deque()                   => 7
+# deque() [4]               => 6
+
+
+# R-6.8
+# 32 enqueue - 15 dequeue + 5 = 22 (current length)
+
+# R-6.9 same operations but queue with max len of 30
+# _front moves only when a dequeue is successful
+# so answer is 15 - 5(failed) = 10
+
+
+# R-6.12
+# add_first(4)    [4]
+# add_last(8)     [4, 8]
+# add_last(9)     [4, 8, 9]
+# add_first(5)    [5, 4, 8, 9]
+# back()                              => 9
+# delete_first()  [4, 8, 9]           => 5
+# delete_last()   [4, 8]              => 9
+# add_last(7)     [4, 8, 7]
+# first()                             => 4
+# last()                              => 7
+# add_last(6)     [4, 8, 7, 6]
+# delete_first()  [8, 7, 6]           => 4
+# delete_first()  [7, 6]              => 8
+
+# R-6.13 - Convert Deq from 12345678 to 12354678 using Queue
 
 # D [1, 2, 3, 4, 5, 6, 7, 8]
 # Q - front [] back
@@ -126,7 +172,7 @@ def rotate_queue(q: ArrayQueue, count):
 # D [1, 2, 3, 5, 4, 6, 7, 8]
 # Q [] - QED
 
-# 6-14 Convert Deq from 12345678 to 12354678 using Stack
+# R-6.14 Convert Deq from 12345678 to 12354678 using Stack
 
 # D [1, 2, 3, 4, 5, 6, 7, 8]
 # S [] top
@@ -150,3 +196,33 @@ def rotate_queue(q: ArrayQueue, count):
 # 5 x add_first
 # D [1, 2, 3, 5, 4, 6, 7, 8]
 # S [] - QED
+
+
+# C-6.30
+# Put 1 even integer in Q
+# and rest of 99 integers in R
+# chances of Alice's win (she wins with even)
+# 0.5 + 0.5 * 49 / 99
+# 74.74%
+
+
+# C-6.31
+# yoke can hold 2 cows only, moving at slower cow's speed
+# Mazie = 2 min
+# Daisy = 4 min
+# Crazy = 10 min
+# Lazy  = 20 min
+# Target = 34 minutes
+# 1. Daisy + Mazie = 4
+# 2. Daisy back    = 4
+# 3. Lazy + Crazy  = 20
+# 4. Mazie back    = 2
+# 5. Mazie + Daisy = 4
+# TOTAL            = 34
+
+# 1. Daisy + Mazie = 4
+# 2. Mazie back    = 2
+# 3. Lazy + Crazy  = 20
+# 4. Daisy back    = 4
+# 5. Mazie + Daisy = 4
+# TOTAL            = 34

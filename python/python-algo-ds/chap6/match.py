@@ -31,6 +31,7 @@ def is_matched_html(raw):
         if k == -1:
             return False
 
+        # C-6.19
         tag, *rest = raw[j + 1: k].split()
 
         if not tag.startswith('/'):
@@ -82,3 +83,16 @@ def perm_explicit_stack(items):
                 i = s.pop()
                 items.append(perm.pop())
                 i += 1
+
+
+if __name__ == "__main__":
+    print(is_matched_html("<tag1>abcd</tag1>"))
+    print(is_matched_html("<tag1>abc</tag2>"))
+    print(is_matched_html("<tag1><p>abc</p></tag1>"))
+    print(is_matched_html("<tag1 value=abc height=2><p color=\"red\">abc</p></tag1>"))
+
+    print("--------")
+    print(perm_rec([1, 2, 3]))
+
+    print("-----------")
+    print(perm_explicit_stack([1, 2, 3]))
