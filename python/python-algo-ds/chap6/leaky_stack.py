@@ -4,7 +4,7 @@ class LeakyStack:
     def __init__(self, maxlen=10):
         self._data = [None] * maxlen
         self._size = 0
-        self._front = 0
+        self._front = -1
         self._maxlen = maxlen
 
     def __len__(self):
@@ -14,30 +14,21 @@ class LeakyStack:
         return self._size == 0
 
     def push(self, e):
-        if self._atCapacity():
-            last = (self._front + 1) % self._maxlen
-            self._data[last] = e
-            self._front = last
-        else:
-            self._data[self._front] = e
-            self._front = (self._front + 1) % self._maxlen
-            self._size += 1
+        self._front = (self._front + 1) % self._maxlen
+        self._data[self._front] = e
+        self._size = min(self._size + 1, self._maxlen)
 
     def top(self):
         if self.is_empty():
-            # TODO
-            pass
+            return None
         return self._data[self._front]
 
     def pop(self):
         if self.is_empty():
-            # TODO
-            pass
-        prev = (self._front - 1) % self._maxlen
-        res = self._data[prev]
-        self._data[prev] = None
-        self._front = prev
-        self._size -= 1
+            return None
+        res = self._data[self._front]
+        self._size = max(self._size - 1, 0)
+        self._front = (self._front - 1) % self._maxlen
         return res
 
     def _atCapacity(self):
@@ -46,16 +37,8 @@ class LeakyStack:
 
 if __name__ == "__main__":
     s = LeakyStack(3)
-    # s.push(1)
-    # s.push(2)
-    # print('data: ', s._data)
-    # print('size', s._size)
-    # print('front', s._front)
-    # print('pop: ', s.pop())
-    # print('pop: ', s.pop())
-    # print('data: ', s._data)
-    # print('size', s._size)
-    # print('front', s._front)
+
+    print('----PUSHING NOW----')
 
     s.push(1)
     print('data: ', s._data)
@@ -70,6 +53,47 @@ if __name__ == "__main__":
     print('size', s._size)
     print('front', s._front)
     s.push(4)
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print('----POPPING NOW----')
+
+    print(s.pop())
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print(s.pop())
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print(s.pop())
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print(s.pop())
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print(s.pop())
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print('----PUSHING NOW----')
+
+    s.push(1)
+    print('data: ', s._data)
+    print('size', s._size)
+    print('front', s._front)
+
+    print('----POPPING NOW----')
+
+    print(s.pop())
     print('data: ', s._data)
     print('size', s._size)
     print('front', s._front)
