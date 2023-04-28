@@ -5,6 +5,7 @@ class PositionalList(_DoublyLinkedBase):
     """
     A sequential container of elements, a linked list which allows positional access
     """
+
     class Position:
         def __init__(self, container, node):
             """
@@ -32,7 +33,7 @@ class PositionalList(_DoublyLinkedBase):
             raise TypeError("p must be proper Position type")
         if p._container is not self:
             raise ValueError("p does not belong to this container")
-        if p._node._next is None:
+        if p._node._next is None:  # convention for deprecated nodes
             raise ValueError("p is no longer valid")
         return p._node
 
@@ -41,7 +42,7 @@ class PositionalList(_DoublyLinkedBase):
         if node is self._header or node is self._trailer:
             return None
         else:
-            return self.Position(self, node) # self passed as container
+            return self.Position(self, node)  # self passed as container
 
     # --------------------- ACCESSORS -----------------------------------
 
@@ -171,7 +172,7 @@ class PositionalList(_DoublyLinkedBase):
             # make new neighbours point to node
             node._prev._next = node
             node._next._prev = node
-    
+
     # 7.34
     def swap(self, p, q):
         p_val = p._node._element
@@ -197,6 +198,7 @@ class PositionalList(_DoublyLinkedBase):
         # q._node._prev = p_node_prev
         # q._node._next = p_node_next
 
+
 # 7.18
 # List: {a, b, c, d, e, f}
 # sequence of access: (a, b, c, d, e, f, a, c, f, b, d, e)
@@ -216,8 +218,8 @@ class PositionalList(_DoublyLinkedBase):
 
 # 7.19
 # Minimum is 0 elements with access less than k
-    # this is because we can access each element k times, thus no element
-    # accessed fewer than k times
+# this is because we can access each element k times, thus no element
+# accessed fewer than k times
 # Maximum is n - 1
-    # since we can access one element kn times
-    # leaving others with 0 accesses, this < k times
+# since we can access one element kn times
+# leaving others with 0 accesses, this < k times

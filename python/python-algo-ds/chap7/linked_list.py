@@ -1,5 +1,6 @@
 class Empty(Exception):
-    pass 
+    pass
+
 
 class LinkedList:
 
@@ -75,13 +76,13 @@ class LinkedListRecursive:
     #         self._element = element
     #         self._next = next
     #
-    def __init__(self, element = None):
+    def __init__(self, element=None):
         self._head = element
         self._rest = None
         self._size = 0
 
     def is_empty(self):
-        return self._head is None 
+        return self._head is None
 
     def __len__(self):
         return self._size
@@ -105,7 +106,7 @@ class LinkedListRecursive:
             self._head = e
         else:
             if self._rest is None:
-               self._rest = LinkedListRecursive(e) 
+                self._rest = LinkedListRecursive(e)
             else:
                 self._rest.add_last(e)
 

@@ -67,6 +67,8 @@ class LinkedQueue:
         Q2._size = 0
 
 # 7.25
+
+
 class LinkedQueueWithSentinel:
     class _Node:
         __slots__ = '_element', '_next'

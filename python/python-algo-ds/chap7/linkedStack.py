@@ -12,7 +12,7 @@ class LeakyStack:
             self._element = element
             self._next = next
 
-    def __init__(self, capacity = 3):
+    def __init__(self, capacity=3):
         self._head = None
         self._size = 0
         self._capacity = capacity
@@ -71,7 +71,7 @@ class LinkedStack:
         if self.is_empty():
             raise Empty("Stack is empty")
 
-        return self._head.element
+        return self._head._element
 
     def pop(self):
         if self.is_empty():
@@ -82,6 +82,8 @@ class LinkedStack:
         return result
 
 # 7.24
+
+
 class LinkedStackWithSentinel:
     class _Node:
         __slots__ = '_element', '_next'

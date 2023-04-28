@@ -1,5 +1,6 @@
 from positional_list import PositionalList
 
+
 def insertion_sort(L: PositionalList):
     """Sort PositionalList of comparable elements"""
     if len(L) > 1:
@@ -10,8 +11,8 @@ def insertion_sort(L: PositionalList):
 
             value = pivot.element()
 
-            if value > marker.element(): #pivot is already sorted
-                marker = pivot #pivot becomes new marker
+            if value > marker.element():  # pivot is already sorted
+                marker = pivot  # pivot becomes new marker
             else:
                 walk = marker
                 while walk != L.first() and L.before(walk).element() > value:
