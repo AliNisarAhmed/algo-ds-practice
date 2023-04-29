@@ -19,3 +19,19 @@ def insertion_sort(L: PositionalList):
                     walk = L.before(walk)
                 L.delete(pivot)
                 L.add_before(walk, value)
+
+
+if __name__ == "__main__":
+    l = PositionalList()
+    l.add_first(1)
+    l.add_first(100)
+    l.add_first(2)
+    l.add_first(3)
+
+    print('size: ', l._size)
+
+    l.print()
+
+    insertion_sort(l)
+
+    l.print()

@@ -77,7 +77,7 @@ class PositionalList(_DoublyLinkedBase):
 
     def print(self):
         for e in self:
-            print(e)
+            print('Element: ', e)
 
     # --------------------- MUTATORS -----------------------------------
 

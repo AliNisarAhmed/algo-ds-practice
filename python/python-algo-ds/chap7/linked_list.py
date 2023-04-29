@@ -35,10 +35,10 @@ class LinkedList:
         if self.is_empty():
             self._tail = newest
             self._head = newest
-            return self
+        else:
+            self._tail._next = newest
+            self._tail = newest
 
-        self._tail._next = newest
-        self._tail = newest
         self._size += 1
         return self
 
@@ -53,7 +53,7 @@ class LinkedList:
     def print_list(self):
         current = self._head
         while current is not None:
-            print(f"{current._element}")
+            print("element: ", f"{current._element}")
             current = current._next
 
     def reverse(self):
@@ -66,8 +66,53 @@ class LinkedList:
             walk = adv
         self._head = prev
 
+    # R-7.1
+    def second_to_last(self):
+        if self.is_empty():
+            raise Empty("List is empty")
+
+        if self._size == 1:
+            return None
+
+        walk = self._head
+        last = self._head._next
+
+        while last._element != self._tail._element:
+            walk = last
+            last = last._next
+
+        return walk._element
+
+    # R-7.3
+    def count(self):
+        return self._count(self._head, 0)
+
+    def _count(self, node, current_count):
+        if self.is_empty() or node is None:
+            return current_count
+
+        return self._count(node._next, current_count + 1)
+
+
+# R-7.2
+def join_lists(node1, node2):
+    """
+    node1 and node2 are the first nodes of two lists
+    """
+
+    walk = node1
+    last = node1._next
+    while last is not None:
+        walk = last
+        last = last._next
+
+    walk._next = node2
+
+    return node1
 
 # 7.27
+
+
 class LinkedListRecursive:
     # class _Node:
     #     __slots__ = '_element', '_next'
@@ -142,3 +187,48 @@ def reverse(head):
     head._next = None
 
     return new_head
+
+
+if __name__ == "__main__":
+    print("---- 7.1 ----")
+    linkL = LinkedList()
+    linkL.add_first(1).add_first(2).add_first(3).add_first(4)
+
+    print(linkL._size)
+
+    linkL.print_list()
+
+    print("Second to last: ", linkL.second_to_last())
+
+    print('------------')
+
+    print('---- 7.2 ----')
+
+    l1 = LinkedList()
+    l1.add_last(1)
+    l1.add_last(2)
+    l1.add_last(3)
+
+    l2 = LinkedList()
+    l2.add_last(6)
+    l2.add_last(5)
+    l2.add_last(4)
+
+    join_lists(l1._head, l2._head)
+
+    l1.print_list()
+
+    print('--------')
+
+    print('---- 7.3 ----')
+
+    l3 = LinkedList()
+    l3.add_last(3)
+    l3.add_last(3)
+    l3.add_last(3)
+    l3.add_last(3)
+    l3.add_last(3)
+
+    print(l3.count())
+
+    print('--------')

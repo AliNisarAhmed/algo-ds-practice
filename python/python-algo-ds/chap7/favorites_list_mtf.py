@@ -8,11 +8,12 @@ since it is more likely to be accessed again
 from favorites_list import FavoritesList
 from positional_list import PositionalList
 
+
 class FavoritesListMTF(FavoritesList):
     def _move_up(self, p):
         if p != self._data.first():
-            self._data.add_first(self._data.delete(p)) # delete/reinsert at first pos
-
+            # delete/reinsert at first pos
+            self._data.add_first(self._data.delete(p))
 
     def top(self, k):
         """Generate a sequence of top k elements sorted in terms of access count"""
@@ -37,5 +38,5 @@ class FavoritesListMTF(FavoritesList):
                 walk = temp.after(walk)
 
             # we have found the element with highest count
-            yield highPos.element()._count # report element to the user
-            temp.delete(highPos) # remove from temp list
+            yield highPos.element()._count  # report element to the user
+            temp.delete(highPos)  # remove from temp list

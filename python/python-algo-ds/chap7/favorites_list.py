@@ -1,4 +1,6 @@
 from positional_list import PositionalList
+
+
 class FavoritesList:
     """List of elements orderd from most frequently accessed to least"""
 
@@ -30,10 +32,11 @@ class FavoritesList:
             walk = self._data.before(p)
 
             if count > walk.element()._count:
-                while (walk != self._data.first() and 
+                while (walk != self._data.first() and
                         count > self._data.before(walk).element()._count):
                     walk = self._data.before(walk)
-                self._data.add_before(walk, self._data.delete(p)) # delete/reinsert
+                self._data.add_before(
+                    walk, self._data.delete(p))  # delete/reinsert
 
     def __len__(self):
         return len(self._data)
@@ -74,3 +77,24 @@ class FavoritesList:
         while walk is not None:
             walk.element()._count = 0
             walk = self._data.after(walk)
+
+
+if __name__ == "__main__":
+    f_list = FavoritesList()
+    f_list.access('ali')
+    f_list.access('ali')
+    f_list.access('ali')
+    f_list.access('azlan')
+    f_list.access('azlan')
+    f_list.access('azlan')
+    f_list.access('azlan')
+    f_list.access('azlan')
+    f_list.access('samrah')
+    f_list.access('samrah')
+    f_list.access('arshi')
+    f_list.access('arshi')
+    f_list.access('arshi')
+    f_list.access('arshi')
+
+    for v in f_list.top(4):
+        print(v)
