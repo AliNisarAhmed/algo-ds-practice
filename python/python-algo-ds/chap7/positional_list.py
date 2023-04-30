@@ -68,14 +68,14 @@ class PositionalList(_DoublyLinkedBase):
             yield cursor.element()
             cursor = self.after(cursor)
 
-    # 7.15
+    # R-7.15
     def __reversed__(self):
         cursor = self.last()
         while cursor is not None:
             yield cursor.element()
             cursor = self.before(cursor)
 
-    def print(self):
+    def print_list(self):
         for e in self:
             print('Element: ', e)
 
@@ -110,6 +110,7 @@ class PositionalList(_DoublyLinkedBase):
         original._element = e
         return old_value
 
+    # R-7.12
     def max(self):
         if self.is_empty():
             return None
@@ -120,6 +121,7 @@ class PositionalList(_DoublyLinkedBase):
                 result = e
         return result
 
+    # R-7.13
     def find(self, e):
         for element in self:
             if element == e:
@@ -134,20 +136,19 @@ class PositionalList(_DoublyLinkedBase):
         else:
             return self._find_rec(e, node._next)
 
-    # 7.14
+    # R-7.14
     def find_rec(self, e):
         return self._find_rec(e, self.first())
 
+    # R-7.16
     def add_last2(self, e):
         """
         Using only {is_empty, first, last, prev, next, add_after, add_first}
         """
         if self.is_empty():
-            self.add_first(e)
-            return self
+            return self.add_first(e)
 
-        self.add_after(self.last(), e)
-        return self
+        return self.add_after(self.last(), e)
 
     def add_before2(self, p, e):
         """
@@ -158,6 +159,7 @@ class PositionalList(_DoublyLinkedBase):
         else:
             return self.add_after(self.before(p), e)
 
+    # R-7.17
     def move_to_front(self, p):
         # node has a _prev and a _next
         node = self._validate(p)
@@ -173,33 +175,92 @@ class PositionalList(_DoublyLinkedBase):
             node._prev._next = node
             node._next._prev = node
 
-    # 7.34
+    # C-7.34
     def swap(self, p, q):
-        p_val = p._node._element
-        q_val = p._node._element
+        p_val = p.element()
+        q_val = q.element()
         p._node._element = q_val
-        p._node._element = p_val
+        q._node._element = p_val
 
-        # p_node = p._node
-        # q_node = q._node
-        #
-        # p_node_prev = p._node._prev
-        # p_node_next = p._node._next
-        #
-        # q_node_prev = q._node._prev
-        # q_node_next = q._node._next
-        #
-        # p._node = q_node
-        # q._node = p_node
-        #
-        # p._node._prev = q_node_prev
-        # p._node._next = q_node_next
-        #
-        # q._node._prev = p_node_prev
-        # q._node._next = p_node_next
+    # C-7.38
+    def bubble_sort(self):
+        didSwap = True
+
+        while didSwap:
+            walk = self.first()
+            didSwap = False
+            while walk is not None:
+                next_pos = self.after(walk)
+                if next_pos is not None and next_pos.element() < walk.element():
+                    self.swap(walk, next_pos)
+                    if not didSwap:
+                        didSwap = True
+                walk = next_pos
+
+            if not didSwap:
+                break
 
 
-# 7.18
+# C-7.37
+def two_sum(pl: PositionalList, v):
+    """pl is sorted"""
+    if pl.is_empty():
+        return (None, None)
+
+    start = pl.first()
+    end = pl.last()
+
+    while start is not end:
+        total = start.element() + end.element()
+        print('total', total)
+        if total == v:
+            return start, end
+        elif total < v:
+            start = pl.after(start)
+            if start == end:
+                break
+        else:
+            end = pl.before(end)
+            if start == end:
+                break
+
+    return None, None
+
+
+if __name__ == "__main__":
+    pl = PositionalList()
+    one = pl.add_first(1)
+    two = pl.add_after(one, 2)
+    three = pl.add_after(two, 3)
+    four = pl.add_after(three, 42)
+
+    pl.print_list()
+    # pl.swap(two, three)
+    pl.print_list()
+
+    print('--------')
+    print('---- 7.37 ----')
+
+    p1, p2 = two_sum(pl, 84)
+    print(p1.element() if p1 is not None else p1)
+    print(p2.element() if p2 is not None else p2)
+
+    print('--------')
+    print('---- 7.38 ----')
+
+    pl = PositionalList()
+    pl.add_first(1)
+    two = pl.add_first(2)
+    pl.add_last(4)
+    pl.add_last(3)
+    pl.add_last(10)
+    pl.add_after(two, 100)
+
+    pl.print_list()
+    pl.bubble_sort()
+    pl.print_list()
+
+# R-7.18
 # List: {a, b, c, d, e, f}
 # sequence of access: (a, b, c, d, e, f, a, c, f, b, d, e)
 
@@ -218,8 +279,9 @@ class PositionalList(_DoublyLinkedBase):
 
 # 7.19
 # Minimum is 0 elements with access less than k
-# this is because we can access each element k times, thus no element
+# this is because we can access each element k times, thus ZERO elements
 # accessed fewer than k times
-# Maximum is n - 1
+# Maximum is n - 1 elements
 # since we can access one element kn times
-# leaving others with 0 accesses, this < k times
+# leaving others with 0 accesses
+# thus the number of elements with <k accesses = n - 1

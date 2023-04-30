@@ -1,9 +1,11 @@
 from linked_list import LinkedList
 from doubly_linked_base import _DoublyLinkedBase
 
+
 def concatenate(L: LinkedList, M: LinkedList):
     L._tail._next = M._head
     return L
+
 
 if __name__ == "__main__":
     l = LinkedList()
@@ -13,6 +15,8 @@ if __name__ == "__main__":
     concatenate(l, m)
     l.print_list()
 
+
+# R-7.9
 def concat(L: _DoublyLinkedBase, M: _DoublyLinkedBase):
     t1 = L._trailer._prev
     t2 = M._header._next

@@ -45,6 +45,7 @@ class _DoublyLinkedBase:
 
         return element
 
+    # R-7.8
     def middle(self):
         if self._size == 0:
             raise ValueError("List is empty")
@@ -57,6 +58,7 @@ class _DoublyLinkedBase:
 
         return left
 
+    # C-7.33
     def reverse(self):
         prev = self._header
         walk = self._header._next

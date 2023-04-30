@@ -1,5 +1,7 @@
 from positional_list import PositionalList
 
+
+# R-7.11
 def max(l: PositionalList):
     if l.is_empty():
         return None
@@ -9,8 +11,9 @@ def max(l: PositionalList):
     for e in l:
         if e > result:
             result = e
-            
+
     return result
+
 
 if __name__ == "__main__":
     l = PositionalList()
@@ -21,4 +24,3 @@ if __name__ == "__main__":
 
     print(max(l))
     print(l.max())
-

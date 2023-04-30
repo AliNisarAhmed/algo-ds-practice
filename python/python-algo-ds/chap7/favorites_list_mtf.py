@@ -40,3 +40,18 @@ class FavoritesListMTF(FavoritesList):
             # we have found the element with highest count
             yield highPos.element()._count  # report element to the user
             temp.delete(highPos)  # remove from temp list
+
+
+# R-7.20
+# Accessing elements in their current order will reverse the list
+# e.g. { a b c }
+# access a -> a b c
+# access b -> b a c
+# access c -> c b a
+
+
+# R-7.21
+# lets say we have n elements in order 1..n
+# access each in order 1..n
+# then again access in order 1..n
+# total accesses: 2n times (1 + 2 + 3 + n) -> 2n (n (n + 1)) -> O(N^3)

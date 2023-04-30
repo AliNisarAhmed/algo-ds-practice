@@ -1,18 +1,20 @@
 from positional_list import PositionalList
 
 
-class FavoritesList:
-    """List of elements orderd from most frequently accessed to least"""
-
+# C-7.40
+class FavoritesListMTFWithPurge():
     class _Item:
-        __slots__ = '_value', '_count'
+        __slots__ = '_value', '_count', '_accessed_at'
 
         def __init__(self, e):
             self._value = e
             self._count = 0
+            self._accessed_at = 0
 
-    def __init__(self):
+    def __init__(self, purge_point=10):
         self._data = PositionalList()
+        self._access_count = 0
+        self._purge_point = purge_point
 
     def _find_position(self, e):
         """Search for element e and returns its Position"""
@@ -26,17 +28,9 @@ class FavoritesList:
         Move item at Position p earlier in the list based on access count
 
         Very similar to how insertion sort item is bubbled up"""
-
         if p != self._data.first():
-            count = p.element()._count
-            walk = self._data.before(p)
-
-            if count > walk.element()._count:
-                while (walk != self._data.first() and
-                        count > self._data.before(walk).element()._count):
-                    walk = self._data.before(walk)
-                self._data.add_before(
-                    walk, self._data.delete(p))  # delete/reinsert
+            # delete/reinsert at first pos
+            self._data.add_first(self._data.delete(p))
 
     def __len__(self):
         return len(self._data)
@@ -52,8 +46,16 @@ class FavoritesList:
         if p is None:
             p = self._data.add_last(self._Item(e))
 
+        self._access_count += 1
         p.element()._count += 1
+        p._accessed_at = self._access_count
         self._move_up(p)
+        self.purge()
+
+    def purge(self):
+        last = self._data.last()
+        if self._access_count - last._accessed_at > self._purge_point:
+            self._data.delete(last)
 
     def remove(self, e):
         p = self._find_position(e)
@@ -68,35 +70,3 @@ class FavoritesList:
             item = walk.element()
             yield item._value
             walk = self._data.after(walk)
-
-    # R-7.22
-    def clear(self):
-        self._data = PositionalList()
-
-    # R-7.23
-    def reset_counts(self):
-        walk = self._data.first()
-        while walk is not None:
-            walk.element()._count = 0
-            walk = self._data.after(walk)
-
-
-if __name__ == "__main__":
-    f_list = FavoritesList()
-    f_list.access('ali')
-    f_list.access('ali')
-    f_list.access('ali')
-    f_list.access('azlan')
-    f_list.access('azlan')
-    f_list.access('azlan')
-    f_list.access('azlan')
-    f_list.access('azlan')
-    f_list.access('samrah')
-    f_list.access('samrah')
-    f_list.access('arshi')
-    f_list.access('arshi')
-    f_list.access('arshi')
-    f_list.access('arshi')
-
-    for v in f_list.top(4):
-        print(v)

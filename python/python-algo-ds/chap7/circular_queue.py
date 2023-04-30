@@ -57,6 +57,7 @@ class CircularQueue:
             # old head becomes the new tail
             self._tail = self._tail._next
 
+    # R-7.5
     def size(self):
         # same as __len__ but without using _size prop
         if self._tail is None:
@@ -70,3 +71,15 @@ class CircularQueue:
             current = current._next
 
         return count
+
+    # R-7.6
+    def in_same_list(self, x, y):
+        """Check if x and y are on same circular list"""
+        walk = x._next
+
+        while walk != x:
+            if walk == y:
+                return True
+            walk = walk._next
+
+        return False

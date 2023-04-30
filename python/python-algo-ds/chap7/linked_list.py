@@ -66,6 +66,37 @@ class LinkedList:
             walk = adv
         self._head = prev
 
+    # C-7.28
+    def reverse_rec(self):
+        if self.is_empty():
+            raise Empty("List is empty")
+
+        result = self._reverse_rec(self._head)
+        self._head, self._tail = self._tail, self._head
+        return result
+
+    def _reverse_rec(self, node):
+        if node._next is None:
+            return node
+
+        rest = self._reverse_rec(node._next)
+        rest._next = node
+        node._next = None
+
+        return node
+
+    # R-7.29
+    def reverse_iter(self):
+        prev = None
+        walk = self._head
+        while walk is not None:
+            next_node = walk._next
+            walk._next = prev
+            prev = walk
+            walk = next_node
+        self._tail = self._head
+        self._head = prev
+
     # R-7.1
     def second_to_last(self):
         if self.is_empty():
@@ -110,9 +141,27 @@ def join_lists(node1, node2):
 
     return node1
 
-# 7.27
+# R-7.4
+# For singly linked list, we need the nodes previous to the two nodes to swap
+# For doubly linked list, we can swap directly
+# Hence, single linked list will take longer
 
 
+# R-7.5
+def count_nodes_circular_list(circular_list: LinkedList):
+    if circular_list.is_empty():
+        return 0
+    count = 1
+    walk = circular_list._head
+    next_node = walk._next
+
+    while next_node != circular_list._head and next_node is not None:
+        count += 1
+        walk = next_node
+        next_node = next_node._next
+
+
+# C-7.27
 class LinkedListRecursive:
     # class _Node:
     #     __slots__ = '_element', '_next'
@@ -176,19 +225,6 @@ class LinkedListRecursive:
                 self._rest.print_list()
 
 
-def reverse(head):
-    if head is None:
-        return head
-    if head._next is None:
-        return head
-
-    new_head = reverse(head._next)
-    head._next._next = head
-    head._next = None
-
-    return new_head
-
-
 if __name__ == "__main__":
     print("---- 7.1 ----")
     linkL = LinkedList()
@@ -230,5 +266,41 @@ if __name__ == "__main__":
     l3.add_last(3)
 
     print(l3.count())
+
+    print('--------')
+
+    print('---- 7.27 ----')
+
+    lr = LinkedListRecursive()
+    lr.add_first(1)
+    lr.add_first(2)
+    lr.add_first(3)
+
+    lr.print_list()
+
+    print('--------')
+
+    print('---- 7.28 ----')
+
+    lr = LinkedList()
+    lr.add_first(1)
+    lr.add_first(2)
+    lr.add_first(3)
+
+    print('original head: ', lr._head._element)
+    print('original tail: ', lr._tail._element)
+
+    lr.print_list()
+
+    lr.reverse_rec()
+
+    lr.print_list()
+
+    print('new head: ', lr._head._element)
+    print('new tail: ', lr._tail._element)
+
+    lr.reverse_iter()
+    print('reversed iter')
+    lr.print_list()
 
     print('--------')
