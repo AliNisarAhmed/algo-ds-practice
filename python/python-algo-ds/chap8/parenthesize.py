@@ -28,7 +28,8 @@ def parenthesize(T, p):
 class ParenthesizeTour(EulerTour):
     def _hook_previsit(self, p, d, path):
 
-        if path and path[-1] > 0:  # p follows a sibling (first sibling has path = 0)
+        # p follows a sibling (first sibling has path = 0)
+        if path and path[-1] > 0:
             print(", ", end="")  # so preface with a comma
 
         print(p.element(), end="")  # then print element

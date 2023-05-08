@@ -34,7 +34,7 @@ class LinkedBinaryTree(BinaryTree):
             raise TypeError("p must be proper Position type")
         if p._container is not self:
             raise ValueError("p does not belong to this container")
-        if p._node._parent is p._node:  # a convention usef for deprecated nodes
+        if p._node._parent is p._node:  # a convention used for deprecated nodes
             raise ValueError("p is no longer valid")
         return p._node
 
@@ -87,6 +87,7 @@ class LinkedBinaryTree(BinaryTree):
         return self._make_position(self._root)
 
     def _add_left(self, p, e):
+        """Create a new left child for Position p, storing element e"""
         node = self._validate(p)
         if node._left is not None:
             raise ValueError("Left child exists")
@@ -290,7 +291,7 @@ class SentinelLinkedBinaryTree:
         return self._make_position(self._root)
 
     def _delete(self, p):
-        node = self._validate(p)
+        self._validate(p)
         if self.num_children(p) == 2:
             raise ValueError("Cannot delete with two children")
 
@@ -363,6 +364,13 @@ if __name__ == "__main__":
     ten = t._add_right(six, 10)
     eleven = t._add_right(seven, 11)
 
+    print('---- R-8.5 ----')
+    # t._add_left(five, 12)
+
+    print('left leaves: ', t.count_left_leaves())
+
+    print('--------')
+
     # print("before swap: ")
     # t.print()
     # t._swap(three, seven)
@@ -396,8 +404,8 @@ if __name__ == "__main__":
     # ---------------------------------------
 
     # C-8.50 Testing
-    p = t.inorder_next(root)
-    print(p.element() if p is not None else None)
+    # p = t.inorder_next(root)
+    # print(p.element() if p is not None else None)
 
 
 # R-8.16

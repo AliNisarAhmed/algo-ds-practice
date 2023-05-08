@@ -13,12 +13,14 @@ n  = number of nodes
 ne = number of external nodes (leaves)
 ni = number of internal nodes (non-leaves)
 h  = height of tree (height of root node is 0)
+d  = set of all nodes at the same depth d, called level d of T
 
 Properties:
     1. h + 1 <= n <= 2^(h + 1) - 1
     2. 1 <= ne <= 2^h
     3. h <= ni <= 2^h - 1
     4. log(n + 1) - 1 <= h <= n - 1
+    5. level d has at most 2^d nodes
 
 If T is proper: than following additional properties:
     1. 2h + 1 <= n <= 2^(h + 1) - 1
@@ -26,6 +28,8 @@ If T is proper: than following additional properties:
     3. h <= ni <= 2^h - 1
     4. log(n + 1) - 1 <= h <= (n - 1) / 2
     5. ne = ni + 1
+    6. ni = (n - 1) / 2
+    7. ne = (n + 1) / 2
 """
 
 from tree import Tree
@@ -73,7 +77,7 @@ class BinaryTree(Tree):
         left_child = self.left(p)
         count = 0
 
-        if left_child is not None and len(list(self.children(left_child))) == 0:
+        if left_child is not None and self.is_leaf(left_child):
             count += 1
 
         for c in self.children(p):

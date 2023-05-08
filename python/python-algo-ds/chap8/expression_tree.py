@@ -26,7 +26,8 @@ class ExpressionTree(LinkedBinaryTree):
         if left is not None:  # presumably three parameter form
             if token not in "+-*x/":
                 raise ValueError("token must be a valid operator +-*x/")
-            self._attach(self.root(), left, right)  # use inherited, non public method
+            # use inherited, non public method
+            self._attach(self.root(), left, right)
 
     def __str__(self):
         pieces = []  # sequence of piecewise strings to compose

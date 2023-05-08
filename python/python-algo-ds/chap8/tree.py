@@ -101,7 +101,8 @@ class Tree:
     def _subtree_preorder(self, p):
         yield p  # visit p before its subtree rooted at p
         for c in self.children(p):  # for each child p
-            for other in self._subtree_preorder(c):  # do preorder of c's subtree
+            # do preorder of c's subtree
+            for other in self._subtree_preorder(c):
                 yield other  # yielding each to our caller
 
     def positions(self):
@@ -136,7 +137,8 @@ class Tree:
         if self.is_leaf(p):
             print(f"P = {p.element()} with height = {0}")
             return 0
-        height = 1 + max([self._print_p_and_height(c) for c in self.children(p)])
+        height = 1 + max([self._print_p_and_height(c)
+                         for c in self.children(p)])
         print(f"P = {p.element()} with height = {height}")
         return height
 

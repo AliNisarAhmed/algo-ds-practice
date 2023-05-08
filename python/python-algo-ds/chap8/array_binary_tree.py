@@ -1,5 +1,4 @@
 from tree import Tree
-import math
 
 
 class ArrayBinaryTree(Tree):
