@@ -21,8 +21,10 @@ def parenthesize(T, p):
         print(")", end="")
 
 
-# R-8.26
+# R-8.27
 # - ( / ( x ( + 3 1) 3) + ( - 9 5) 2) + ( x (3 - (7 4))) 6
+# R-8.28
+# Since parenthesize is essentially a pre-order traversal, hence O(n)
 
 
 class ParenthesizeTour(EulerTour):

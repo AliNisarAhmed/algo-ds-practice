@@ -130,6 +130,8 @@ class Tree:
             while not fringe.is_empty():
                 p = fringe.dequeue()
                 yield p
+                # R-8.26
+                # p.extend(self.children(p))
                 for c in self.children(p):
                     fringe.enqueue(c)
 
@@ -158,9 +160,8 @@ class Tree:
     def print_p_and_depth(self):
         return self._print_p_and_depth(self.root(), 0)
 
-        # C-8.46
-        # Path length is the sum of the depths of all positions in T
-
+    # C-8.46
+    # Path length is the sum of the depths of all positions in T
     def path_length(self):
         _, pl = self._path_length(self.root(), 0)
         return pl
@@ -175,26 +176,6 @@ class Tree:
             path_length = path_length + d + pl
 
         return (depth, path_length)
-
-
-# C-8.35
-def are_trees_isomorphic(t1, t2):
-    nc1 = t1.num_children()
-    nc2 = t2.num_children
-
-    if nc1 == 0 and nc2 == 0:
-        return True
-
-    if nc1 != nc2:
-        return False
-
-    for (c1, c2) in list(zip(t1.children(), t2.children())):
-        res = are_trees_isomorphic(c1, c2)
-
-        if res is False:
-            return False
-
-    return True
 
 
 # R-8.6

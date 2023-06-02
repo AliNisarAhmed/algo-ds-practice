@@ -43,12 +43,27 @@ class BinaryEulerTour(EulerTour):
 # R-8.17
 class LevelNumberEulerTour(BinaryEulerTour):
     def _tour(self, p, d, path, level=0):
+        print('level: ', level, 'p=', p.element())
         if self._tree.left(p) is not None:
             self._tour(self._tree.left(p), d + 1, path, 2 * level + 1)
 
         if self._tree.right(p) is not None:
             self._tour(self._tree.right(p), d + 1, path, 2 * level + 2)
-        print(level)
+
+
+# R-8.29
+class CountDescendents(BinaryEulerTour):
+    def _hook_postvisit(self, p, d, path, results):
+        # print('element: ', p.element())
+        # print('d', d)
+        # print('path', path)
+        # print('results', results)
+        is_leaf = self.tree().is_leaf(p)
+        num_child = 0 if is_leaf else sum(results)
+
+        result = 1 if is_leaf else num_child
+        print('num_child: ', num_child)
+        return result
 
 
 # C-8.47
@@ -106,9 +121,18 @@ if __name__ == "__main__":
     t.add_right(g, "l8")
 
     # tour = LevelNumberEulerTour(t)
-
+    #
     # tour.execute()
 
-    balance_factor = BalanceFactor(t)
+    print('--------')
 
-    balance_factor.execute()
+    print('---- R-8.29 ----')
+
+    cd = CountDescendents(t)
+    cd.execute()
+
+    print('--------')
+
+    # balance_factor = BalanceFactor(t)
+    #
+    # balance_factor.execute()

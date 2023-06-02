@@ -1,3 +1,4 @@
+import types
 from binary_tree import BinaryTree
 
 
@@ -164,6 +165,19 @@ class LinkedBinaryTree(BinaryTree):
             t2._root = None
             t2._size = 0
 
+    def _size_subtree(self, p):
+        if p is None:
+            return 0
+
+        if self.is_leaf(p):
+            return 1
+
+        count = 1
+        for c in self.children(p):
+            count += self._size_subtree(c)
+
+        return count
+
     # C-8.38
     def _delete_subtree(self, p):
         parent = self.parent(p)
@@ -173,7 +187,8 @@ class LinkedBinaryTree(BinaryTree):
         else:
             parent._node._right = None
 
-        self._size = len(list(self.positions()))
+        # self._size = len(list(self.positions()))
+        self._size -= self._size_subtree(p)
 
     # C-8.39
     def _swap(self, p, q):
@@ -281,8 +296,44 @@ class MutableLinkedBinaryTree(LinkedBinaryTree):
         return self._attach(p, t1, t2)
 
 
+# C-8.35
+def are_trees_isomorphic(t1, t2):
+    return _are_trees_isomorphic(t1, t1.root(), t2, t2.root())
+
+
+def _are_trees_isomorphic(t1, p1, t2, p2):
+    p1_empty = p1 is None
+    p2_empty = p2 is None
+
+    if (p1_empty and p2_empty):
+        return True
+
+    if (p1_empty and not p2_empty):
+        return False
+
+    if (not p1_empty and p2_empty):
+        return False
+
+    t1_childen = list(t1.children(p1))
+    t2_children = list(t2.children(p2))
+
+    if t1_childen != t2_children:
+        return False
+
+    for (c1, c2) in zip(t1_childen, t2_children):
+        res = _are_trees_isomorphic(t1, c1, t2, c2)
+
+        if res is False:
+            return False
+
+    return True
+
+
 # C-8.40
 class SentinelLinkedBinaryTree:
+    def __init__(self):
+        self._sentinal = types.SimpleNamespace()
+
     def _add_root(self, e):
         if self._sentinel._left is not None:
             raise ValueError("Root already exists")
@@ -351,6 +402,7 @@ def clone2(t: LinkedBinaryTree) -> LinkedBinaryTree:
 if __name__ == "__main__":
     t = LinkedBinaryTree()
     root = t._add_root(1)
+    print('is_root', t.is_root(root))
     two = t._add_left(root, 2)
     three = t._add_right(root, 3)
 
@@ -368,6 +420,25 @@ if __name__ == "__main__":
     # t._add_left(five, 12)
 
     print('left leaves: ', t.count_left_leaves())
+
+    print('--------')
+
+    print('---- C-8.35 ----')
+
+    t1 = LinkedBinaryTree()
+    t2 = LinkedBinaryTree()
+
+    print('isomorphic?', are_trees_isomorphic(t1, t2))
+
+    root1 = t1._add_root(1)
+
+    print('isomorphic?', are_trees_isomorphic(t1, t2))
+
+    root2 = t2._add_root(100)
+    print('isomorphic?', are_trees_isomorphic(t1, t2))
+
+    left1 = t1._add_left(root1, 2)
+    print('isomorphic?', are_trees_isomorphic(t1, t2))
 
     print('--------')
 
@@ -407,6 +478,28 @@ if __name__ == "__main__":
     # p = t.inorder_next(root)
     # print(p.element() if p is not None else None)
 
+    # -----------------------------------------------
+
+    # print('--------')
+    # print('---- 8.38 ----')
+    #
+    # t.print()
+    # print('tree size: ', t._size)
+    # t._delete_subtree(six)
+    # t.print()
+    # print('tree size: ', t._size)
+
+    # ------------------------------------------------
+
+    print('--------')
+    print('---- 8.44 ----')
+
+    t.print_p_and_height()
+
+    # ------------------------------------------------
+
+
+
 
 # R-8.16
 # Level numbering function f
@@ -418,5 +511,10 @@ if __name__ == "__main__":
 # if p is the right child of q, then f(p) = 2 x f(q) + 2
 
 # Now show that
-# for every position p of T, f(p) <= 2^n - 2
-# Show an example of a BT with 7 nodes that attains the above upper bound on f(p)
+# 1.for every position p of T, f(p) <= 2^n - 2
+# [1, 2, 3, 4, 5, 6] = n = 6
+# [0, 1, 2, 3, 4, 5] ~~ [60, 60, 60, 60, 60, 60]
+
+# 2.Show an example of a BT with 7 nodes that attains the above upper bound on f(p)
+# upper bound = 2^7 - 2 = 126
+# It's a BT with 7 Right childs only
