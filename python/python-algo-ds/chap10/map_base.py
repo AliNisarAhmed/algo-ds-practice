@@ -4,7 +4,7 @@ from collections.abc import MutableMapping
 class MapBase(MutableMapping):
     """Abstract base class that includes a non-public _Item class
 
-    MutableMapping class provides 5 significant beaviours:
+    MutableMapping class provides 5 significant behaviours:
     1. M[k]
     2. M[k] =  v
     3. del M[k]

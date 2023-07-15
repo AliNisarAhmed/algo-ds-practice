@@ -1,4 +1,4 @@
-from doubly_linked_base import _DoublyLinkedBase
+from .doubly_linked_base import _DoublyLinkedBase
 
 
 class PositionalList(_DoublyLinkedBase):
@@ -25,6 +25,10 @@ class PositionalList(_DoublyLinkedBase):
 
         def __ne__(self, other):
             return not (self == other)
+
+        # R-10.7
+        def __hash__(self):
+            return hash(self.element())
 
     # --------------------- UTILITY METHODS -----------------------------------
     def _validate(self, p):

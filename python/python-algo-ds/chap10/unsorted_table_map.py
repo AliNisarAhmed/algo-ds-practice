@@ -1,6 +1,7 @@
 from map_base import MapBase
 
 
+# R-10.5
 class UnsortedTableMap(MapBase):
     """Map implementation using an unordered list"""
 
@@ -39,7 +40,15 @@ class UnsortedTableMap(MapBase):
         for item in self._table:
             yield item._key, item._value
 
-    # R-10.3 what is the worst case time for inserting n kv pairs
+    # C-10.28
+    def setdefault(self, key, value):
+        for item in self._table:
+            if item._key == key:
+                item._value = value
+                return
+        self._table.append(self._Item(key, value))
+
+    # R-10.4 what is the worst case time for inserting n kv pairs
     # into UnsortedTableMap
     # Answer: O(n^2)
     # O(1) for first key

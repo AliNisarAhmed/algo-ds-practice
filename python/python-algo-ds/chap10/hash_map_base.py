@@ -48,23 +48,38 @@ class HashMapBase(MapBase):
             self[k] = v  # this call updates _n
 
 
-# R-10.8 What would be a good has code for a string of form
+# R-10.8 What would be a good hash code for a string of form
 # "9X9XX99X9XX999999" where 9 is a digit and X is a letter
-# Answer: cyclic shhift or polynomial
+# Answer: cyclic shift or polynomial
 
 # R-10.9
 # h(i) = (3i + 5) mod 11 is the hash function
 # draw the resulting map using separate chaining
 # 12, 44, 13, 88, 23, 94, 11, 39, 20, 16, 5
+# 12 = 8
+# 44 = 5
+# 13 = 0
+# 88 = 5
+# 23 = 8
+# 94 = 1
+# 11 = 5
+# 39 = 1
+# 20 = 10
+# 16 = 9
+# 5 = 9
 # [[13], [94, 39], _, _, _, [44, 88, 11], _, _, [12, 23], [16, 5], [20]]
 
 # R-10.10
 # Same as above, but assume linear probing
-# [13, 94, 39, 16, 5, 44, 88, 11, 12, 23, 20]
+# 00 01 02 03 04 05 06 07 08 09 10
+# 13 94 39 16 05  44 88 11 12 23 20
 
 # R-10.11
 # Same as above, but assume quadratic probing
 # [13, 94, 11, 20, _, 44, 88, 16, 12, 23, 39]
+# 00 01 02 03 04 05 06 07 08 09 10
+# 13 94 39 11    44 88 16 12 23 20 -> Error: no space found for 5
+
 
 # R-10.13
 # Worst case time for n entries in map with chaining? O(n^2), dump every entry into same bucket
@@ -82,6 +97,10 @@ class HashMapBase(MapBase):
 # h'(k) = 7 - (k mod 7)
 # [13, 94, 23, 88, 39, 44, 11, 5, 12, 16, 20]
 
+# Double Hasing:
+# if A[h(k)] is already occupied
+# then try A[h(k) + f(i) mod N] for i = 1, 2, 3...
+# where f(i) = i * h'k
 
 def hash1(n):
     return (3 * n + 5) % 11
@@ -92,7 +111,7 @@ def hash2(n):
 
 
 def double_hashing(arr):
-    result = 11 * [None]
+    result = len(arr) * [None]
 
     for n in arr:
         hash_code = hash1(n)
@@ -100,8 +119,8 @@ def double_hashing(arr):
         if result[hash_code] is None:
             result[hash_code] = n
         else:
-            for i in range(1, 11, 1):
-                double_hash = (hash_code + i * hash2(n)) % 11
+            for i in range(1, len(arr), 1):
+                double_hash = (hash_code + i * hash2(n)) % len(arr)
                 print(double_hash)
                 if result[double_hash] is None:
                     result[double_hash] = n

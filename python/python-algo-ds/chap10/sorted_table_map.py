@@ -1,4 +1,4 @@
-from collections import MapBase
+from map_base import MapBase
 
 
 class SortedTableMap(MapBase):
@@ -22,7 +22,8 @@ class SortedTableMap(MapBase):
             elif k < self._table[mid]._key:
                 return self._find_index(k, low, mid - 1)
             else:
-                return self._find_index(k, mid + 1, high)  # Answer is right of mid
+                # Answer is right of mid
+                return self._find_index(k, mid + 1, high)
 
     def __init__(self):
         self._table = []
@@ -30,13 +31,13 @@ class SortedTableMap(MapBase):
     def __len__(self):
         return len(self._table)
 
-    def __getitem(self, k):
+    def __getitem__(self, k):
         j = self._find_index(k, 0, len(self._table) - 1)
         if j == len(self._table) or self._table[j]._key != k:
             raise KeyError("Key Error: " + repr(k))
         return self._table[j]._value
 
-    def __setitem(self, k, v):
+    def __setitem__(self, k, v):
         """assign v to key k, override if already present"""
         j = self._find_index(k, 0, len(self._table) - 1)
         if j < len(self._table) and self._table[j]._key == k:
@@ -73,21 +74,33 @@ class SortedTableMap(MapBase):
         """Return KV pair with least key >= k"""
         j = self._find_index(k, 0, len(self._table) - 1)  # j's key >= k
         if j < len(self._table):
-            return self._table[j]._key, self._table[j]._value)
+            return (self._table[j]._key, self._table[j]._value)
+        else:
+            return None
+
+    def find_le(self, k):
+        """Return KV pair with max key <= k"""
+        j = self._find_index(k, 0, len(self._table) - 1)
+        if j < len(self._table):
+            key = self._table[j]._key
+            if key > k:  # means mid + 1 was returned
+                return (self._table[j - 1]._key, self._table[j - 1]._value)
+            return (self._table[j]._key, self._table[j]._value)
         else:
             return None
 
     def find_lt(self, k):
-        j = self._find_index(k, 0, len(self._table) - 1) # j's key >= k
+        j = self._find_index(k, 0, len(self._table) - 1)  # j's key >= k
         if j > 0:
-            return (self._table[j - 1]._key, self._table[j-1]._value) # note the use of j - 1
+            # note the use of j - 1
+            return (self._table[j - 1]._key, self._table[j-1]._value)
         else:
             return None
 
     def find_gt(self, k):
-        j = self._find_index(k, 0, len(self._table) - 1) # j's key >= k
+        j = self._find_index(k, 0, len(self._table) - 1)  # j's key >= k
         if j < len(self._table) and self._table[j]._key == k:
-            j += 1 # advanced past match
+            j += 1  # advanced past match
         if j < len(self._table):
             return (self._table[j]._key, self._table[j]._value)
         else:
@@ -95,20 +108,43 @@ class SortedTableMap(MapBase):
 
     def find_range(self, start, stop):
         """Iterate all KV pairs such that start <= key <= stop
-        
+
         if start is None, iteration begins withh minimum key of map
         if stop is None, iteration continues thhrough the max key of map
         """
 
-        if start = None:
+        if start is None:
             j = 0
         else:
-            j = self._find_index(start, 0, len(self._table) - 1) # find first result
+            j = self._find_index(start, 0, len(
+                self._table) - 1)  # find first result
         while j < len(self._table) and (stop is None or self._table[j]._key < stop):
             yield (self._table[j]._key, self._table[j]._value)
             j += 1
+
+    def print(self):
+        for item in self._table:
+            print(f"key: {item._key}, value: {item._value}")
 
 
 # R-10.18
 # Why hash table is not suitable for sorted map
 # because there is no way to ensure order after hashing
+
+
+if __name__ == "__main__":
+    sm = SortedTableMap()
+    sm.__setitem__(10000, 8)
+    sm.__setitem__(11000, 7)
+    sm.__setitem__(9000, 7)
+    sm.__setitem__(8500, 6)
+    sm.__setitem__(8700, 7)
+    sm.__setitem__(2000, 4)
+    sm.__setitem__(2500, 5)
+    sm.__setitem__(1800, 4)
+    sm.__setitem__(2000, 5)
+    sm.__setitem__(1500, 3)
+
+    sm.print()
+    print(sm.find_le(2000))
+    print(sm.find_gt(2600))
