@@ -1,5 +1,5 @@
 import types
-from binary_tree import BinaryTree
+from .binary_tree import BinaryTree
 
 
 class LinkedBinaryTree(BinaryTree):
@@ -28,6 +28,10 @@ class LinkedBinaryTree(BinaryTree):
 
         def set_height(self, h):
             self._height = h
+
+        # R-10.7
+        def __hash__(self):
+            return hash(self.element())
 
     def _validate(self, p):
         """Return associated node, if position is valid"""

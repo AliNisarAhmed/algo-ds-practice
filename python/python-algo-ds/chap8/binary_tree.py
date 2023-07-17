@@ -32,7 +32,7 @@ If T is proper: than following additional properties:
     7. ne = (n + 1) / 2
 """
 
-from tree import Tree
+from .tree import Tree
 
 
 class BinaryTree(Tree):

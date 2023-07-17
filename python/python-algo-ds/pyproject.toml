@@ -1,0 +1,6 @@
+[tool.ruff]
+# Enable Pyflakes and pycodestyle rules.
+select = ["E", "F"]
+
+# Never enforce `E501` (line length violations).
+ignore = ["F401"]
