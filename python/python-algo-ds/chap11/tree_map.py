@@ -31,6 +31,7 @@ class TreeMap(LinkedBinaryTree, MapBase):
         else:
             if self.right(p) is not None:
                 return self._subtree_search(self.right(p), k)
+        return p
 
     def _subtree_first_position(self, p):
         """Return Position of first item in subtree rooted at p"""
@@ -282,6 +283,17 @@ class TreeMap(LinkedBinaryTree, MapBase):
             # x is new subtree root
             return x
 
+    # ---- public utility methods ----
+
+    def add_root(self, k, v):
+        return self._add_root(self._Item(k, v))
+
+    def add_left(self, p, k, v):
+        return self._add_left(p, self._Item(k, v))
+
+    def add_right(self, p, k, v):
+        return self._add_right(p, self._Item(k, v))
+
 
 if __name__ == "__main__":
     print("exec")
@@ -298,4 +310,4 @@ if __name__ == "__main__":
 
     m.print()
 
-    print(m.after(ten).key())
+    # print(m.after(ten).key())
