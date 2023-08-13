@@ -33,6 +33,18 @@ class TreeMap(LinkedBinaryTree, MapBase):
                 return self._subtree_search(self.right(p), k)
         return p
 
+    # R-11.6
+    def _subtree_search_iter(self, p: Position, k):
+        current = p
+        while current is not None:
+            if k == current.key():
+                return current
+            elif k < current.key():
+                current = self.left(current)
+            else:
+                current = self.right(current)
+        return current
+
     def _subtree_first_position(self, p):
         """Return Position of first item in subtree rooted at p"""
         walk = p
