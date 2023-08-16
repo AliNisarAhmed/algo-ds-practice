@@ -1,4 +1,4 @@
-from ..chap7 import LinkedQueue
+from ..chap7.linkedQueue import LinkedQueue
 
 
 def merge(S1: LinkedQueue, S2: LinkedQueue, S: LinkedQueue):
