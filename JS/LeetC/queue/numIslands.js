@@ -1,19 +1,19 @@
+const DIRECTIONS = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+];
 
 function numIslands(grid) {
   const M = grid.length;
   const N = grid[0].length;
-  const DIRECTIONS = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
 
   let count = 0;
 
   for (let row = 0; row < M; row++) {
     for (let col = 0; col < N; col++) {
-      if (grid[row][col] === '1') {
+      if (grid[row][col] === "1") {
         count++;
         dfs(row, col);
       }
