@@ -36,4 +36,20 @@ if __name__ == "__main__":
     T = "a quick brown fox jumped over a lazy fox"
     P = "over"
 
+    # print(find_boyer_moore(T, P))
+
+    T = "aaabaadaabaaa"
+    P = "aabaaa"
     print(find_boyer_moore(T, P))
+
+
+# R-13.4
+# Boyer moore text=aaabaadaabaaa, pattern=aabaaa
+# Answer
+# last = {b: 2, a: 5}
+# aaabaadaabaaa
+#    Xaa
+# aaabaadaabaaa
+#  aabaaX       -> i + m - (j + 1) -> 3 + 6 - (2 + 1) -> 6 -> index of d
+# aaabaadaabaaa
+#        aabaaa -> Answer = 7

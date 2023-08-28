@@ -49,4 +49,23 @@ if __name__ == "__main__":
     T = "abacaabaccabacabaabb"
     P = "abacab"
 
-    print(find_kmp(T, P))
+    # print(find_kmp(T, P))
+
+    T = "aaabaadaabaa"
+    P = "aabaaa"
+
+    print(compute_kmp_fail(P))
+
+
+# R-13.5
+# KMP, text=aaabaadaabaa, p=aabaaa
+# Answer:
+# failure function
+#  a a b a a a
+#  0 1 0 1 2 2
+# aaabaadaabaaa
+# aabaaa        after 2 comparisons: fail[0] = 0 + 1; fail[1] = 1 + 1 (fail = 1, 2, 0, 1, 2, 2)
+#               at first failure: k = 2 -> k = fail[1] = 1 (fail = 1, 1, 0, 1, 2, 2)
+# aaabaadaabaaa
+#  aabaaX
+
