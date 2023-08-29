@@ -53,3 +53,35 @@ if __name__ == "__main__":
 #  aabaaX       -> i + m - (j + 1) -> 3 + 6 - (2 + 1) -> 6 -> index of d
 # aaabaadaabaaa
 #        aabaaa -> Answer = 7
+
+
+# R-13.6
+# compute last function for
+# s = "the quick brown fox jumped over a lazy cat"
+# last = {
+# t: 39,
+# h: 1,
+# e: 28,
+# q: 4,
+# u: 21,
+# i: 6,
+# c: 36,
+# k: 8,
+# b: 10,
+# r: 29,
+# o: 27,
+# w: 13,
+# n: 14,
+# f: 16
+# x: 18,
+# j: 20,
+# m: 22,
+# p: 23,
+# d: 25,
+# v: 27,
+# a: 37,
+# l: 32,
+# z: 33,
+# y: 34,
+# ' ': 35,
+# }
