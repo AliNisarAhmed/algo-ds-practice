@@ -13,6 +13,39 @@ def find_brute(T, P):
     return -1
 
 
+# C-13.16
+def rfind_brute(T, P):
+    """find rightmost index of Pattern p if any"""
+    n, m = len(T), len(P)
+    for i in range(n - m, -1, -1):
+        k = 0
+        while k < m and T[i + k] == P[k]:
+            k += 1
+        if k == m:
+            return i
+    return -1
+
+
+# C-13.18
+def count_brute(T, P):
+    n, m = len(T), len(P)
+    count = 0
+    for i in range(n - m + 1):
+        k = 0
+        while k < m and T[i + k] == P[k]:
+            k += 1
+        if k == m:
+            count += 1
+            continue
+    return count
+
+
+if __name__ == "__main__":
+    T = "abcdabcdxxxabcdxxxx"
+    P = "abcd"
+    print(rfind_brute(T, P))
+    print(count_brute(T, P))
+
 # R-13.1
 # List prefixes of String = "aaabbaaa" that are also suffixes of
 # Answer = 4
@@ -37,3 +70,9 @@ def find_brute(T, P):
 # aa[a]abaadaabaaa
 #    aabaaX
 # and so on, till it matches at aaaabaad[a]abaaa
+
+# C-13.15
+# example of a text with length n and Pattern with length m
+# such that brute force is O(nm)
+# Make the text and pattern very periodic
+# T = aaaaaaaaaaa P = aaaaab

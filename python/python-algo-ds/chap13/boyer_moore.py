@@ -32,15 +32,77 @@ def find_boyer_moore(T, P):
     return -1
 
 
+# C-13.17
+def rfind_boyer_moore(T, P):
+    n, m = len(T), len(P)
+    if m == 0:
+        return 0
+
+    last = {}
+    for k in range(m):
+        last[P[k]] = k
+
+    i = n - m
+    k = 0
+
+    while i >= 0:
+        current = T[i]
+        if current == P[k]:
+            if k == m - 1:
+                return i - k
+            else:
+                i += 1
+                k += 1
+        else:
+            j = last.get(current, m + 1)
+            i -= m + min(k, j + 1)
+            k = 0
+    return -1
+
+
+# C-13.20
+def count_boyer_moore(T, P):
+    n, m = len(T), len(P)
+    count = 0
+
+    if m == 0:
+        return 0
+
+    last = {}
+    for k in range(m):
+        last[P[k]] = k
+
+    i = m - 1
+    k = m - 1
+    while i < n:
+        current = T[i]
+        if current == P[k]:
+            if k == 0:
+                count += 1
+                i += 1
+            else:
+                i -= 1
+                k -= 1
+        else:
+            j = last.get(current, -1)
+            i = i + m - min(k, j + 1)
+            k = m - 1
+    return count
+
+
 if __name__ == "__main__":
     T = "a quick brown fox jumped over a lazy fox"
     P = "over"
 
     # print(find_boyer_moore(T, P))
 
-    T = "aaabaadaabaaa"
-    P = "aabaaa"
+    # T = "aaabaadaabaaa"
+    # P = "aabaaa"
+    T = "abcdabcd1234abcdabxy1234"
+    P = "abcd"
     print(find_boyer_moore(T, P))
+    print(rfind_boyer_moore(T, P))
+    print(count_boyer_moore(T, P))
 
 
 # R-13.4
