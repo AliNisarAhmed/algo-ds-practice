@@ -1,1 +1,1 @@
-__package__ = ''
+__package__ = 'python_algo_ds'

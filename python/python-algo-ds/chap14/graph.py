@@ -1,4 +1,6 @@
-from ..chap9.adaptable_pq import AdaptableHeapPriorityQueue
+from chap9.adaptable_pq import AdaptableHeapPriorityQueue, HeapPriorityQueue
+from .partition import Partition
+import pprint
 
 
 class Vertex:
@@ -13,6 +15,9 @@ class Vertex:
 
     def __hash__(self):
         return hash(id(self))
+
+    def __repr__(self):
+        return repr(self._element)
 
 
 class Edge:
@@ -36,6 +41,9 @@ class Edge:
 
     def __hash__(self):
         return hash((self._origin, self._destination))
+
+    def __repr__(self):
+        return repr(self._origin) + '-' + repr(self._destination)
 
 
 class Graph:
@@ -99,9 +107,10 @@ class Graph:
         return v
 
     def insert_edge(self, u, v, x=None):
+        """insert_edge(origin, destination, weight)"""
         e = Edge(u, v, x)
         self._outgoing[u][v] = e
-        self._incoming[u][v] = e
+        self._incoming[v][u] = e
 
 
 def topological_sort(g: Graph):
@@ -195,3 +204,111 @@ def shortest_path_tree(g: Graph, s: Vertex, d):
                 if d[v] == d[u] + weight:
                     tree[v] = e  # edge e is used to reach v
     return tree
+
+
+def MST_PrimJarnik(g: Graph):
+    """Compute a min spanning tree of weighted graph g
+
+    Return a list of edges that comprise the MST (in arbitrary order)
+    """
+
+    d = {}  # d[v] is bound on distance to tree
+    tree = []  # list of edges in spanning tree
+    pq = AdaptableHeapPriorityQueue()  # d[v] maps to value (v, e=(u,v))
+    pqlocator = {}  # map from vertex to its pq locator
+
+    for v in g.vertices():
+        if len(d) == 0:
+            d[v] = 0
+        else:
+            d[v] = float('inf')
+        pqlocator[v] = pq.add(d[v], (v, None))
+
+    while not pq.is_empty():
+        key, value = pq.remove_min()
+        u, edge = value
+        del pqlocator[u]  # u is no longer in pq
+
+        if edge is not None:
+            tree.append(edge)
+
+        for link in g.incident_edges(u):
+            v = link.opposite(u)
+            if v in pqlocator:  # thus v not yet in tree
+                # see if edge (u,v) better connects v to the growing tree
+                weight = link.element()
+                if weight < d[v]:
+                    d[v] = weight
+                    pq.update(pqlocator[v], d[v], (v, link))
+    return tree
+
+
+def MST_Kruskal(g: Graph):
+    """Compute a min spanning tree of a graph
+
+    Return a list of edges that comprise the MST
+
+    The elements of the grah's edges are assumed to be weights
+    """
+    tree = []  # list of edges in the MST
+    pq = HeapPriorityQueue()  # entries are edges in G, with weights as keys
+    forest = Partition()  # keeps track of forest of clusters
+    position = {}  # map each node to its partition key
+
+    for v in g.vertices():
+        position[v] = forest.make_group(v)
+
+    for e in g.edges():
+        pq.add(e.element(), e)  # edge's element is assumed to be its weight
+
+    size = g.vertex_count()
+
+    while len(tree) != size - 1 and not pq.is_empty():
+        # tree not spanning and unprocessed edges remain
+        weight, edge = pq.remove_min()
+        u, v = edge.endpoints()
+        a = forest.find(position[u])
+        b = forest.find(position[v])
+        if a != b:
+            tree.append(edge)
+            forest.union(a, b)
+    return tree
+
+
+if __name__ == "__main__":
+    g = Graph()
+    jfk = g.insert_vertex('JFK')
+    pvd = g.insert_vertex("PVD")
+    bos = g.insert_vertex("BOS")
+    bwi = g.insert_vertex("BWI")
+    mia = g.insert_vertex("MIA")
+    ord = g.insert_vertex("ORD")
+    dfw = g.insert_vertex("DFW")
+    sfo = g.insert_vertex("SFO")
+    lax = g.insert_vertex("LAX")
+
+    g.insert_edge(bwi, jfk, 184)
+    g.insert_edge(bwi, ord, 621)
+    g.insert_edge(bwi, mia, 946)
+    g.insert_edge(jfk, dfw, 1391)
+    g.insert_edge(jfk, pvd, 144)
+    g.insert_edge(jfk, ord, 740)
+    g.insert_edge(jfk, mia, 1090)
+    g.insert_edge(jfk, bos, 187)
+    g.insert_edge(pvd, ord, 849)
+    g.insert_edge(bos, mia, 1258)
+    g.insert_edge(bos, sfo, 2704)
+    g.insert_edge(bos, ord, 867)
+    g.insert_edge(mia, dfw, 1121)
+    g.insert_edge(mia, lax, 2342)
+    g.insert_edge(dfw, ord, 802)
+    g.insert_edge(dfw, sfo, 1464)
+    g.insert_edge(dfw, lax, 1235)
+    g.insert_edge(lax, sfo, 337)
+    g.insert_edge(sfo, ord, 1846)
+
+    d = shortest_path_lengths(g, bwi)
+    pprint.pprint(d)
+    pprint.pprint(shortest_path_tree(g, bwi, d))
+
+    pprint.pp(MST_PrimJarnik(g))

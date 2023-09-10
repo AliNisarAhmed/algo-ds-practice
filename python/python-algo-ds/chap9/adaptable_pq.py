@@ -1,4 +1,4 @@
-from heap_based_pq import HeapPriorityQueue
+from .heap_based_pq import HeapPriorityQueue
 
 
 class AdaptableHeapPriorityQueue(HeapPriorityQueue):
@@ -23,7 +23,7 @@ class AdaptableHeapPriorityQueue(HeapPriorityQueue):
             self._index = j
 
     def _swap(self, i, j):
-        super._swap(i, j)
+        super()._swap(i, j)
         self._data[i]._index = i  # update locator index post-swap
         self._data[j]._index = j  # update locator index (post-swap)
 

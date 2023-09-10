@@ -14,7 +14,7 @@ A heap is a BT that stores a collection of items and satisfies two additional pr
 The height of a heap storing n entries is given by
     - h = floor(log n)
 """
-from priority_queue_base import PriorityQueueBase
+from .priority_queue_base import PriorityQueueBase
 
 
 class HeapPriorityQueue(PriorityQueueBase):
