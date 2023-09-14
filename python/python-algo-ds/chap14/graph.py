@@ -312,3 +312,45 @@ if __name__ == "__main__":
     pprint.pprint(shortest_path_tree(g, bwi, d))
 
     pprint.pp(MST_PrimJarnik(g))
+
+
+# R-14.2
+# If G is a simple undirected graph with 12 vertices and 3 connected components
+# what is the largest number of edges it might have?
+# Answer: 45 (1 component with 10 vertices, 2 components with 1 vertex each)
+
+
+# R-14.6
+# Answer:
+# When we insert, we just append to end of vertices list which is O(1)
+# When we remove a vertex, we must search for all `m` edges to ensure
+# no edge is left with that vertex
+
+
+# R-14.9 & R-14.10
+# Without Edge list, it will not be possible to maintain time bounds, esp
+# the edges() method, since we will need to loop through each vertex to get all
+# edges, thus converting it to O(n + m)
+
+# R-14.11
+# a -> Adj. List  => since it uses O(n + m) space vs Adj.Matrix which uses O(n^2)
+# b -> Adj.Matrix => since n is much greater than m, space usage for both is equivalent
+#       while the O(1) access for Adj.Matrix will become important
+#     However, we can also use Adj.List as space usage is equivalent, and it provides
+#     much better time for `insert_vertex` and `remove_vertex`
+# c -> Adj.Matrix => O(1) for get_edge(u, v) in worst case, cannot be beat
+
+
+# R-14.14
+# The DFS traversal of a complete tree looks like a path (since all edges connect to each other)
+
+# R-14.15
+# The BFS looks like a star, i.e., a rooted tree with 1 root and all external nodes
+
+
+# R-14-16
+# b => 1 - 2 - 3 - 4 - 6 - 5 - 7 - 8
+# c => 1 - 2 - 3 - 4 - 6 - 5 - 7 - 8
+
+# R-14.22
+# To determine the course order, use topological sorting
