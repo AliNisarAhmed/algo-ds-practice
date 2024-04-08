@@ -1,6 +1,8 @@
 package com.ali.algojava.chapter1.section3;
 
 import edu.princeton.cs.algs4.StdOut;
+
+import java.util.Arrays;
 import java.util.Iterator;
 
 // 1.3.14
@@ -24,19 +26,24 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
   }
 
   public void enqueue(Item item) {
+    StdOut.println("before enqueue: " + "last: " + last + " " + Arrays.toString(values));
     if (size == values.length) {
       resize(values.length * 2);
     }
 
-    if (last == values.length) {
-      last = 0;
-    }
+    // if (last == values.length) {
+    //   StdOut.println("setting last to 0");
+    //   last = 0;
+    // }
 
-    values[last++] = item;
+    values[last] = item;
+    last++;
     size++;
+    StdOut.println("after enqueue: " + "last: " + last + " " + Arrays.toString(values));
   }
 
   public Item dequeue() {
+    StdOut.println("before dequeue: " + Arrays.toString(values));
     if (isEmpty()) {
       throw new RuntimeException("Queue is empty");
     }
@@ -54,6 +61,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
       resize(values.length / 2);
     }
 
+    StdOut.println("after dequeue: " + Arrays.toString(values));
     return result;
   }
 
@@ -102,12 +110,16 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
     q.enqueue(1);
     q.enqueue(2);
     q.enqueue(3);
-    q.print();
+    q.enqueue(4);
+    q.enqueue(5);
+    // q.print();
     StdOut.println(q.size());
-    StdOut.println(q.dequeue());
-    StdOut.println(q.dequeue());
-    StdOut.println(q.dequeue());
+    StdOut.println("deq result: " + q.dequeue());
+    StdOut.println("deq result: " + q.dequeue());
+    StdOut.println("deq result: " + q.dequeue());
+    StdOut.println("deq result: " + q.dequeue());
+    StdOut.println("deq result: " + q.dequeue());
     StdOut.println(q.isEmpty());
-    q.print();
+    // q.print();
   }
 }

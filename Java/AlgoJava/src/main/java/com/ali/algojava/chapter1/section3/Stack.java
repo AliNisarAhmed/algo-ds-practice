@@ -11,6 +11,26 @@ public class Stack<Item> implements Iterable<Item> {
     Node next;
   }
 
+  public Stack() {
+    first = null;
+    N = 0;
+  }
+
+  // 1.3.42
+  public Stack(Stack<Item> stack2) {
+    int size = stack2.size();
+    Item[] copy = (Item[]) new Object[size];
+    for (int i = 0; i < size; i++) {
+      copy[i] = stack2.pop();
+    }
+
+    for (int i = size - 1; i >= 0; i--) {
+      Item item = copy[i];
+      push(item);
+      stack2.push(item);
+    }
+  }
+
   public boolean isEmpty() {
     return first == null;
   }

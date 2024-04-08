@@ -20,6 +20,24 @@ public class Queue<Item> implements Iterable<Item> {
     return N;
   }
 
+  public Queue() {
+    first = null;
+    last = null;
+    N = 0;
+  }
+
+  // 1.3.41
+  public Queue(Queue<Item> q) {
+    int size = q.size();
+
+    while (size > 0) {
+      Item item = q.dequeue();
+      enqueue(item);
+      q.enqueue(item);
+      size--;
+    }
+  }
+
   public void enqueue(Item item) {
     Node oldLast = last;
     last = new Node();
