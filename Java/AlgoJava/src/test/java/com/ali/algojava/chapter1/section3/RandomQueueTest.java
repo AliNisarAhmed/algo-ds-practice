@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.princeton.cs.algs4.StdOut;
+import java.util.Iterator;
 import java.util.StringJoiner;
 import org.junit.jupiter.api.Test;
 
@@ -51,5 +52,34 @@ public class RandomQueueTest {
 
     // StdOut.println(sj.toString());
     assertNotEquals("1, 2, 3, 4, 5", sj.toString());
+  }
+
+  @Test
+  public void test_iterator() {
+    RandomQueue<Integer> q = new RandomQueue<>();
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.enqueue(4);
+    q.enqueue(5);
+
+    StringJoiner sj = new StringJoiner(" ");
+    Iterator<Integer> it1 = q.iterator();
+    while (it1.hasNext()) {
+      sj.add(String.valueOf(it1.next()));
+    }
+    String result1 = sj.toString();
+
+    sj = new StringJoiner(" ");
+    Iterator<Integer> it2 = q.iterator();
+    while (it2.hasNext()) {
+      sj.add(String.valueOf(it2.next()));
+    }
+    String result2 = sj.toString();
+
+    StdOut.println("result1: " + result1);
+    StdOut.println("result2: " + result2);
+
+    assertNotEquals(result1, result2);
   }
 }
