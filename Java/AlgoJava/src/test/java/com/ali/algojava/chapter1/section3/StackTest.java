@@ -28,4 +28,21 @@ public class StackTest {
     assertEquals(4, s2.peek());
     assertEquals(2, s1.peek());
   }
+
+  @Test
+  public void test_concat() {
+    Stack<Integer> s1 = new Stack<Integer>();
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+
+    Stack<Integer> s2 = new Stack<Integer>();
+    s2.push(4);
+    s2.push(5);
+    s2.push(6);
+
+    s1.concat(s2);
+    assertEquals(6, s1.size());
+    assertEquals(6, s1.peek());
+  }
 }

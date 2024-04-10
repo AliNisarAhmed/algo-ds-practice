@@ -1,10 +1,14 @@
 package com.ali.algojava.chapter1.section3;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class Stack<Item> implements Iterable<Item> {
   private Node first; // top of stack
   private int N; // size of stack
+  private Node last;
+  // 1.3.50
+  private int operationCount;
 
   private class Node {
     Item item;
@@ -13,6 +17,7 @@ public class Stack<Item> implements Iterable<Item> {
 
   public Stack() {
     first = null;
+    last = null;
     N = 0;
   }
 
@@ -31,8 +36,21 @@ public class Stack<Item> implements Iterable<Item> {
     }
   }
 
+  // 1.3.47
+  public void concat(Stack<Item> stack2) {
+    if (stack2.isEmpty()) {
+      return;
+    }
+    stack2.last.next = first;
+    N += stack2.size();
+    first = stack2.first;
+    stack2.N = 0;
+    stack2.first = null;
+    stack2.last = null;
+  }
+
   public boolean isEmpty() {
-    return first == null;
+    return N == 0;
   }
 
   public int size() {
@@ -44,7 +62,11 @@ public class Stack<Item> implements Iterable<Item> {
     first = new Node();
     first.item = item;
     first.next = oldFirst;
+    if (first.next == null) {
+      last = first;
+    }
     N++;
+    operationCount++;
   }
 
   public Item pop() {
@@ -54,6 +76,10 @@ public class Stack<Item> implements Iterable<Item> {
     Item item = first.item;
     first = first.next;
     N--;
+    if (isEmpty()) {
+      last = null;
+    }
+    operationCount--;
     return item;
   }
 
@@ -73,14 +99,23 @@ public class Stack<Item> implements Iterable<Item> {
 
   private class ListIterator implements Iterator<Item> {
     private Node current = first;
+    private int operationCountSnapshot = operationCount;
 
     @Override
     public boolean hasNext() {
+      if (operationCountSnapshot != operationCount) {
+        throw new ConcurrentModificationException(
+            "stack modified during iteration");
+      }
       return current != null;
     }
 
     @Override
     public Item next() {
+      if (operationCountSnapshot != operationCount) {
+        throw new ConcurrentModificationException(
+            "stack modified during iteration");
+      }
       Item item = current.item;
       current = current.next;
       return item;
