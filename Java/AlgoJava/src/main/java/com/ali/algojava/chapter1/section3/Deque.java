@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 // 1.3.33
 public class Deque<Item> implements Iterable<Item> {
+  // supports pushLeft, pushRight, popLeft, popRight, size, isEmpty
   private Node first;
   private Node last;
   private int size;
