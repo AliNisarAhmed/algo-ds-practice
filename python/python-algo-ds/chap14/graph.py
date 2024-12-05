@@ -188,7 +188,7 @@ def shortest_path_lengths(g: Graph, src: Vertex):
 def shortest_path_tree(g: Graph, s: Vertex, d):
     """
     Reconstruct shortest-path tree rooted at vertex s
-    given distance map d (output of shortest_path_lengths)
+    given distance map d (output of shortest_path_lengths/Djikstra's)
 
     Return tree as a map from each reachable vertex v (other than s)
     to the edge e=(u,v) that is used to reach v from its parent u in
@@ -354,3 +354,8 @@ if __name__ == "__main__":
 
 # R-14.22
 # To determine the course order, use topological sorting
+
+
+# R-14.27
+# 120 - 170 - 115 - 155 - 175 - 180 - 175
+# (1-8) - (8-5) - (5-3) - (8-2) - (2-4) - (2-6) - (6-7)

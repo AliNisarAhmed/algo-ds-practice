@@ -1,0 +1,3 @@
+function backspaceCompare(s, t) {
+
+}

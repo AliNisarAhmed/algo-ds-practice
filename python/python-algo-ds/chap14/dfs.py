@@ -23,6 +23,7 @@ def DFS(g: Graph, u: Vertex, discovered: Dict):
 
 
 def construct_path(u: Vertex, v: Vertex, discovered: Dict):
+    """discovered is the output dictionary of DFS"""
     path = []
     if v in discovered:
         # we build list from v to u and then reverse it at the end
