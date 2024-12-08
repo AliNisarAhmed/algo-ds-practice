@@ -15,10 +15,17 @@
     </repository>
   </repositories>
   <dependencies>
+    <!-- <dependency> -->
+    <!--   <groupId>com.github.kevin-wayne</groupId> -->
+    <!--   <artifactId>algs4</artifactId> -->
+    <!--   <version>master-SNAPSHOT</version> -->
+    <!-- </dependency> -->
     <dependency>
-      <groupId>com.github.kevin-wayne</groupId>
+      <groupId>edu.princeton.cs</groupId>
       <artifactId>algs4</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>1.0.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/algs4/algs4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
